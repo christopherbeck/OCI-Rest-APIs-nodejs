@@ -28,9 +28,10 @@ function getATP(compartmentId, callback) {
     request.end();
 };
 
-
+/*
 // test the above functions
 console.log("GET USER:");
+
 
 headers.getUser(auth.authUserId, function(data) {
     console.log(data);
@@ -49,3 +50,9 @@ headers.getUser(auth.authUserId, function(data) {
 
    
 });
+*/
+
+module.exports = {
+    getATP: getATP
+    
+    };

@@ -4,8 +4,6 @@ var regions = require('./regions.js');
 
 var https = require('https');
 
-//Create autonomous database ATP 
-
 
 function getATP(compartmentId, callback) {
 

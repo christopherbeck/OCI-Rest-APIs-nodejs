@@ -4,7 +4,27 @@ var https = require('https');
 var httpSignature = require('http-signature');
 var jsSHA = require("jssha");
 
-var sign = function(req, body) {
+var process = function( options, callback ){
+
+  var requestOptions = {};
+
+  requestOptions.host = regions.dbAshburnRegion;
+  requestOptions.path = options.path;
+  requestOptions.method = options.method;
+  requestOptions.headers = { "Content-Type": "application/json" };
+
+  request = https.request(
+              requestOptions, 
+              ocirest.handleResponse(callback));
+
+  ocirest.sign( request, options );
+
+  if ( options.body !== undefined )
+    request.write(options.body);
+  request.end();
+}
+
+var sign = function(request, options) {
 
   var apiKeyId = auth.tenancyId + "/" + 
                  auth.userId + "/" + 
@@ -17,14 +37,14 @@ var sign = function(req, body) {
 
   var methodsThatRequireExtraHeaders = ["POST", "PUT"];
 
-  if(methodsThatRequireExtraHeaders.indexOf(req.method.toUpperCase()) !== -1) {
-    body = body || "";
+  if(methodsThatRequireExtraHeaders.indexOf(request.method.toUpperCase()) !== -1) {
+    options.body = options.body || "";
 
     var shaObj = new jsSHA("SHA-256", "TEXT");
-    shaObj.update(body);
+    shaObj.update(options.body);
 
-    req.setHeader("Content-Length", body.length);
-    req.setHeader("x-content-sha256", shaObj.getHash('B64'));
+    request.setHeader("Content-Length", options.body.length);
+    request.setHeader("x-content-sha256", shaObj.getHash('B64'));
 
     headersToSign = headersToSign.concat([
       "content-type",
@@ -33,15 +53,15 @@ var sign = function(req, body) {
     ]);
   }
 
-  httpSignature.sign(req, {
+  httpSignature.sign(request, {
     key: auth.privateKey,
     keyId: apiKeyId,
     headers: headersToSign
   });
 
   var newAuthHeaderValue = 
-    req.getHeader("Authorization").replace("Signature ", "Signature version=\"1\",");
-  req.setHeader("Authorization", newAuthHeaderValue);
+    request.getHeader("Authorization").replace("Signature ", "Signature version=\"1\",");
+  request.setHeader("Authorization", newAuthHeaderValue);
 };
 
 // generates a function to handle the https.request response object
@@ -61,6 +81,7 @@ var handleResponse = function(callback) {
 };
 
 module.exports = {
+  process: process,
 sign: sign,
 handleResponse: handleResponse
 };

@@ -1,16 +1,11 @@
 var https = require('https');
 var httpSignature = require('http-signature');
 var jsSHA = require('jssha');
-var regions = require( './regions.js' );
 
 function process( auth, options, callback ) {
   // begin https request
-  request = https.request(
-              { host : regions.endpoint.database[auth.region],
-                path : options.path,
-                method : options.method,
-                headers : { "Content-Type": "application/json" } }, 
-              handleResponse(callback));
+  options.headers = { "Content-Type": "application/json" };
+  request = https.request( options, handleResponse(callback));
 
   // sign/authorize the https request for REST call
   var body = JSON.stringify( options.body );

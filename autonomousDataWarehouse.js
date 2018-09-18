@@ -1,8 +1,10 @@
 var ocirest = require('./ocirest.js');
+var endpoint = require('./endpoints.js');
 
 function create( auth, options, callback ){
   ocirest.process( auth,
                    { path : auth.RESTversion + '/autonomousDataWarehouses',
+                     host : endpoint.service.database[auth.region],
                      method : 'POST',
                      body : options }, 
                    callback );
@@ -11,6 +13,7 @@ function create( auth, options, callback ){
 function update( auth, dbOCID, options, callback ) {
   ocirest.process( auth,
                    { path: auth.RESTversion + '/autonomousDataWarehouses/' + encodeURIComponent(dbOCID),
+                     host : endpoint.service.database[auth.region],
                      method : 'PUT',
                      body : options },
                    callback );
@@ -19,6 +22,7 @@ function update( auth, dbOCID, options, callback ) {
 function restore( auth, dbOCID, options, callback ) {
   ocirest.process( auth,
                     { path: auth.RESTversion + '/autonomousDataWarehouses/' + encodeURIComponent(dbOCID) + '/actions/restore',
+                     host : endpoint.service.database[auth.region],
                      method : 'PUT',
                      body : options },
                    callback );
@@ -28,6 +32,7 @@ function restore( auth, dbOCID, options, callback ) {
 function start( auth, dbOCID, callback ) {
   ocirest.process( auth,
                    { path : auth.RESTversion + '/autonomousDataWarehouses/' + encodeURIComponent(dbOCID) + '/actions/start',
+                     host : endpoint.service.database[auth.region],
                      method : 'POST' },
                     callback );
 };
@@ -35,6 +40,7 @@ function start( auth, dbOCID, callback ) {
 function stop( auth, dbOCID, callback ) {
   ocirest.process( auth,
                    { path : auth.RESTversion + '/autonomousDataWarehouses/' + encodeURIComponent(dbOCID) + '/actions/stop',
+                     host : endpoint.service.database[auth.region],
                      method : 'POST' },
                     callback );
 };
@@ -42,6 +48,7 @@ function stop( auth, dbOCID, callback ) {
 function get( auth, dbOCID, callback ) {
   ocirest.process( auth,
                    { path : auth.RESTversion + '/autonomousDataWarehouses/' + encodeURIComponent(dbOCID),
+                     host : endpoint.service.database[auth.region],
                      method : 'POST' },
                     callback );
 };
@@ -49,6 +56,7 @@ function get( auth, dbOCID, callback ) {
 function drop( auth, dbOCID, callback ) {
   ocirest.process( auth,
                    { path : auth.RESTversion + '/autonomousDataWarehouses/' + encodeURIComponent(dbOCID),
+                     host : endpoint.service.database[auth.region],
                      method : 'DELETE' },
                     callback );
 };
@@ -56,6 +64,7 @@ function drop( auth, dbOCID, callback ) {
 function list( auth, compartmentId, callback ) {
   ocirest.process( auth,
                    { path : auth.RESTversion + '/autonomousDataWarehouses?' + 'compartmentId=' + encodeURIComponent(compartmentId),
+                     host : endpoint.service.database[auth.region],
                      method : 'GET' },
                     callback );
 };

@@ -1,7 +1,7 @@
-var autonomousDatabase = require( './autonomousDatabase.js' );
-var autonomousDataWarehouse = require( './autonomousDataWarehouse.js' );
+var database = require( './services/database.js' );
+var objectStore = require( './services/objectStore.js' );
 
 module.exports = {
-    autonomousDatabase: autonomousDatabase,
-    autonomousDataWarehouse: autonomousDataWarehouse
+    database: database,
+    objectStore: objectStore
 }

@@ -23,7 +23,6 @@ auth.privateKey = fs.readFileSync(auth.privateKeyPath, 'ascii');
 /*
 var AWDOCID = 'ocid1.autonomousdwdatabase.oc1.iad.abuwcljtbqogthz3o4zffd7tcddcfgl4edoi5ro2chquqk7ufslbgiwsywjq';
 var ATPOCID = 'ocid1.autonomousdatabase.oc1.iad.abuwcljskistzoklbyg2wkmparvlfblisrdc6sjhcltqcqvfs777o4uutjcq';
-var compOCID = 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq';
 
 
 autonomousDatabase.list( compOCID, function(data){ console.log(data); });
@@ -34,6 +33,16 @@ autonomousDatabase.update( ATPOCID, options, function(data){console.log(data);} 
 
 */
 
+//oci.db.autonomousDatabase.list( auth, compartmentId, function(data){console.log(data[0].dbName);});
+//oci.db.autonomousDataWarehouse.list( auth, compartmentId, function(data){console.log(data[0].dbName);});
 
-oci.autonomousDatabase.list( auth, compartmentId, function(data){console.log(data[0].dbName);});
-oci.autonomousDataWarehouse.list( auth, compartmentId, function(data){console.log(data[0].dbName);});
+//var ATPOCID = 'ocid1.autonomousdatabase.oc1.iad.abuwcljskistzoklbyg2wkmparvlfblisrdc6sjhcltqcqvfs777o4uutjcq';
+//var options = { "freeformTags" : {"tag1": 123456, "xxx": "yyy", "zzz": "aaa" }};
+var compOCID = 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq';
+//oci.db.autonomousDatabase.update( auth, ATPOCID, options, function(data){console.log(data);} );
+
+oci.database.autonomousDatabaseBackup.list( auth, {"compartmentId": compOCID }, function(data){console.log(data);} );
+//oci.objectStore.bucket.list(auth, 'oraclecloud431', {compartmentId: compOCID }, function(data){console.log(data);} );
+oci.objectStore.bucket.get(auth, 'oraclecloud431', 'calvin_bucket', function(data){console.log(data);} );
+
+oci.objectStore.namespace.get( auth, function(data){console.log(data);} )

@@ -8,7 +8,7 @@ function create( auth, options, callback ){
                    callback );
 }
 
-function update( dbOCID, options, callback ) {
+function update( auth, dbOCID, options, callback ) {
   ocirest.process( auth,
                    { path: auth.RESTversion + '/autonomousDataWarehouses/' + encodeURIComponent(dbOCID),
                      method : 'PUT',

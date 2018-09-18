@@ -1,27 +1,37 @@
-var autonomousDatabases = require('./autonomousDatabases.js');
-var auth = require('./auth.js');
-var httpSignature = require("http-signature");
+var autonomousDatabase = require('./autonomousDatabase.js');
+var autonomousDataWarehouse = require('./autonomousDataWarehouse.js');
+var os = require( 'os' );
+var fs = require( 'fs' );
 
+var auth={
+    tenancyId : 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq',
+    userId : 'ocid1.user.oc1..aaaaaaaauhde6lmbsx6zayli4uddqswbhjynjoab2lxnt5rtsc6wk7q3izja',
+    keyFingerprint : 'd0:77:11:66:7b:a8:90:c0:ef:c7:5c:79:9d:c6:f4:24',
+    RESTversion : '/20160918',
+    region: 'us-ashburn-1',
+    privateKeyPath: '/Users/clbeck/.oci/oci_api_key.pem'
+};
+
+var compartmentId = 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq';
+
+if(auth.privateKeyPath.indexOf("~/") === 0) {
+    auth.privateKeyPath = auth.privateKeyPath.replace("~", os.homedir())
+}
+auth.privateKey = fs.readFileSync(auth.privateKeyPath, 'ascii');
+
+//console.log( auth.privateKey );
 /*
-autonomousDatabases.list(
-    auth.compartment,
-    function(data){ console.log(data); }
-);
-*/
-/*
-autonomousDatabases.start( 
-  'ocid1.autonomousdatabase.oc1.iad.abuwcljskistzoklbyg2wkmparvlfblisrdc6sjhcltqcqvfs777o4uutjcq',
-  function(data) {console.log(data);})
-*/
+var AWDOCID = 'ocid1.autonomousdwdatabase.oc1.iad.abuwcljtbqogthz3o4zffd7tcddcfgl4edoi5ro2chquqk7ufslbgiwsywjq';
+var ATPOCID = 'ocid1.autonomousdatabase.oc1.iad.abuwcljskistzoklbyg2wkmparvlfblisrdc6sjhcltqcqvfs777o4uutjcq';
+var compOCID = 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq';
 
-var options = {};
-options.dbOCID = 'ocid1.autonomousdatabase.oc1.iad.abuwcljskistzoklbyg2wkmparvlfblisrdc6sjhcltqcqvfs777o4uutjcq';
-options.displayName = 'newNewAmy';
-autonomousDatabases.update( options, function(data) {console.log(data);})
 
-/*
-console.log( httpSignature.sshKeyFingerprint( 
-    httpSignature.pemToRsaSSHKey( auth.privateKey)));
+autonomousDatabase.list( compOCID, function(data){ console.log(data); });
+autonomousDatabase.get( ATPOCID, function(data) {console.log(data);})
 
-console.log( auth.keyFingerprint);
+var options = { "freeformTags" : {"tag1": 123456, "xxx": "yyy", "zzz": "aaa" }};
+autonomousDatabase.update( ATPOCID, options, function(data){console.log(data);} );
+
 */
+autonomousDataWarehouse.list( auth, compartmentId, function(data){console.log(data[0].dbName);});
+autonomousDatabase.list( auth, compartmentId, function(data){console.log(data[0].dbName);});

@@ -1,49 +1,34 @@
-var auth = require('./auth.js');
-var regions = require('./regions.js');
 var https = require('https');
 var httpSignature = require('http-signature');
-var jsSHA = require("jssha");
+var jsSHA = require('jssha');
+var regions = require( './regions.js' );
 
-var process = function( options, callback ){
-
-  var requestOptions = {};
-
-  requestOptions.host = regions.dbAshburnRegion;
-  requestOptions.path = options.path;
-  requestOptions.method = options.method;
-  requestOptions.headers = { "Content-Type": "application/json" };
-
+function process( auth, options, callback ) {
+  // begin https request
   request = https.request(
-              requestOptions, 
-              ocirest.handleResponse(callback));
+              { host : regions.endpoint.database[auth.region],
+                path : options.path,
+                method : options.method,
+                headers : { "Content-Type": "application/json" } }, 
+              handleResponse(callback));
 
-  ocirest.sign( request, options );
-
-  if ( options.body !== undefined )
-    request.write(options.body);
-  request.end();
+  // sign/authorize the https request for REST call
+  var body = JSON.stringify( options.body );
+  sign( auth, request, body );
+  request.end(body);
 }
 
-var sign = function(request, options) {
-
-  var apiKeyId = auth.tenancyId + "/" + 
-                 auth.userId + "/" + 
-                 auth.keyFingerprint;
-
-  var headersToSign = [
-        "host",
-        "date",
-        "(request-target)" ];
-
+function sign( auth, request, body ) {
+  var headersToSign = [ "host",  "date",  "(request-target)" ];
   var methodsThatRequireExtraHeaders = ["POST", "PUT"];
 
-  if(methodsThatRequireExtraHeaders.indexOf(request.method.toUpperCase()) !== -1) {
-    options.body = options.body || "";
-
+  if(methodsThatRequireExtraHeaders.indexOf(request.method.toUpperCase()) !== -1) 
+  {
+    body = body || ""; 
     var shaObj = new jsSHA("SHA-256", "TEXT");
-    shaObj.update(options.body);
+    shaObj.update(body);
 
-    request.setHeader("Content-Length", options.body.length);
+    request.setHeader("Content-Length", body.length);
     request.setHeader("x-content-sha256", shaObj.getHash('B64'));
 
     headersToSign = headersToSign.concat([
@@ -53,27 +38,26 @@ var sign = function(request, options) {
     ]);
   }
 
-  httpSignature.sign(request, {
-    key: auth.privateKey,
-    keyId: apiKeyId,
-    headers: headersToSign
-  });
+  httpSignature.sign(
+    request, 
+    { key: auth.privateKey,
+      keyId: auth.tenancyId + "/" + auth.userId + "/" + auth.keyFingerprint,
+      headers: headersToSign }
+  );
 
   var newAuthHeaderValue = 
     request.getHeader("Authorization").replace("Signature ", "Signature version=\"1\",");
   request.setHeader("Authorization", newAuthHeaderValue);
+
 };
 
 // generates a function to handle the https.request response object
-var handleResponse = function(callback) {
-
+function handleResponse( callback ) {
   return function(response) {
     var responseBody = "";
-
     response.on('data', function(chunk) {
       responseBody += chunk;
     });
-
     response.on('end', function() {
       callback(JSON.parse(responseBody));
     });
@@ -82,6 +66,6 @@ var handleResponse = function(callback) {
 
 module.exports = {
   process: process,
-sign: sign,
-handleResponse: handleResponse
+  sign: sign,
+  handleResponse: handleResponse
 };

@@ -38,7 +38,27 @@ var loadBalancerAshburnRegion ="iaas.us-ashburn-1.oraclecloud.com";
 var loadBalancerFrankfurtRegion ="iaas.eu-frankfurt-1.oraclecloud.com";
 var loadBalancerLondonRegion = "iaas.uk-london-1.oraclecloud.com";
 
+var endpoint = 
+  { database : { 'us-phoenix-1' : 'database.us-phoenix-1.oraclecloud.com',
+                 'us-ashburn-1' : 'database.us-ashburn-1.oraclecloud.com',
+                 'eu-frankfurt-1' : 'database.eu-frankfurt-1.oraclecloud.com',
+                 'uk-london-1' : 'database.uk-london-1.oraclecloud.com' } ,
+    identity : { 'us-phoenix-1' : 'identity.us-phoenix-1.oraclecloud.com',
+                 'us-ashburn-1' : 'identity.us-ashburn-1.oraclecloud.com',
+                 'eu-frankfurt-1' : 'identity.eu-frankfurt-1.oraclecloud.com',
+                 'uk-london-1' : 'identity.uk-london-1.oraclecloud.com' } ,
+    core : { 'us-phoenix-1' : 'iaas.us-phoenix-1.oraclecloud.com',
+             'us-ashburn-1' : 'iaas.us-ashburn-1.oraclecloud.com',
+             'eu-frankfurt-1' : 'iaas.eu-frankfurt-1.oraclecloud.com',
+             'uk-london-1' : 'iaas.uk-london-1.oraclecloud.com' } ,
+    objectStore : { 'us-phoenix-1' : 'objectstorage.us-phoenix-1.oraclecloud.com',
+                    'us-ashburn-1' : 'objectstorage.us-ashburn-1.oraclecloud.com',
+                    'eu-frankfurt-1' : 'objectstorage.eu-frankfurt-1.oraclecloud.com',
+                    'uk-london-1' : 'objectstorage.uk-london-1.oraclecloud.com' } 
+  };
+               
 module.exports = {
+    endpoint: endpoint,
 coreServicesPhoenixRegion: coreServicesPhoenixRegion,
 coreServicesAshburnRegion: coreServicesAshburnRegion,
 coreServicesFrankfurtRegion: coreServicesFrankfurtRegion,

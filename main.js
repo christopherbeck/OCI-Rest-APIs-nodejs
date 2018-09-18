@@ -1,7 +1,7 @@
-var autonomousDatabase = require('./autonomousDatabase.js');
-var autonomousDataWarehouse = require('./autonomousDataWarehouse.js');
 var os = require( 'os' );
 var fs = require( 'fs' );
+
+var oci = require( './oci' );
 
 var auth={
     tenancyId : 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq',
@@ -33,5 +33,7 @@ var options = { "freeformTags" : {"tag1": 123456, "xxx": "yyy", "zzz": "aaa" }};
 autonomousDatabase.update( ATPOCID, options, function(data){console.log(data);} );
 
 */
-autonomousDataWarehouse.list( auth, compartmentId, function(data){console.log(data[0].dbName);});
-autonomousDatabase.list( auth, compartmentId, function(data){console.log(data[0].dbName);});
+
+
+oci.autonomousDatabase.list( auth, compartmentId, function(data){console.log(data[0].dbName);});
+oci.autonomousDataWarehouse.list( auth, compartmentId, function(data){console.log(data[0].dbName);});

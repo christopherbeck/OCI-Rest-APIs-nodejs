@@ -45,4 +45,6 @@ oci.database.autonomousDatabaseBackup.list( auth, {"compartmentId": compOCID }, 
 //oci.objectStore.bucket.list(auth, 'oraclecloud431', {compartmentId: compOCID }, function(data){console.log(data);} );
 oci.objectStore.bucket.get(auth, 'oraclecloud431', 'calvin_bucket', function(data){console.log(data);} );
 
-oci.objectStore.namespace.get( auth, function(data){console.log(data);} )
+oci.objectStore.namespace.getMetadata( auth, 'oraclecloud431', function(data){console.log(data);} )
+
+oci.objectStore.obj.list( auth, 'oraclecloud431', 'calvin_bucket', null, function(data){console.log(data);})

@@ -9,6 +9,25 @@ function get( auth, callback ){
                    callback );
 }
 
+function getMetadata( auth, namespaceName, callback ){
+  ocirest.process( auth,
+                   { path : '/n/' + namespaceName,
+                     host : endpoint.service.objectStore[auth.region],
+                     method : 'GET' },
+                   callback );
+}
+
+function updateMetadata( auth, namespaceName, options, callback ){
+  ocirest.process( auth,
+                   { path : '/n/' + namespaceName,
+                     host : endpoint.service.objectStore[auth.region],
+                     method : 'PUT',
+                     body : options },
+                   callback );
+}
+
 module.exports = {
-    get: get
+    get: get,
+    getMetadata: getMetadata,
+    updateMetadata: updateMetadata
 }

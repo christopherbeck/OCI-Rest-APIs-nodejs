@@ -1,55 +1,59 @@
 var ocirest = require('../../ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
-function create( auth, options, callback ){
+function create( auth, parameters, callback ){
     ocirest.process( auth,
                      { path : auth.RESTversion + '/autonomousDataWarehouseBackups',
                        host : endpoint.service.database[auth.region],
                        method : 'POST',
-                       body : options }, 
+                       'opc-request-id' : parameters['opc-request-id'],
+                       'opc-retry-token' : parameters['opc-retry-token'],
+                       body : parameters.body }, 
                      callback );
  };
 
- function get( auth, backUpId, callback ) {
+ function get( auth, parameters, callback ) {
     ocirest.process( auth,
-                     { path : auth.RESTversion + '/autonomousDataWarehouseBackups/' + encodeURIComponent(backUpId),
+                     { path : auth.RESTversion + '/autonomousDataWarehouseBackups/' + encodeURIComponent(parameters.autonomousDatabaseBackupId),
                        host : endpoint.service.database[auth.region],
+                       'opc-request-id' : parameters['opc-request-id'],
                        method : 'POST' },
                       callback );
   };
 
-  function list( auth, options, callback ) {
+  function list( auth, parameters, callback ) {
     var path = '';
-    if ( 'autonomousdatabaseId' in options )
-      path = path + 'autonomousdatabaseId=' + encodeURIComponent( options.autonomousdatabaseId );
+    if ( 'autonomousdatabaseId' in parameters )
+      path = path + 'autonomousdatabaseId=' + encodeURIComponent( parameters.autonomousdatabaseId );
 
-    if ( 'compartmentId' in options )
-      path = path + 'compartmentId=' + encodeURIComponent( options.compartmentId );
+    if ( 'compartmentId' in parameters )
+      path = path + 'compartmentId=' + encodeURIComponent( parameters.compartmentId );
 
-    if ( 'limit' in options )
-      path = path + '&limit=' + encodeURIComponent( options.limit );
+    if ( 'limit' in parameters )
+      path = path + '&limit=' + encodeURIComponent( parameters.limit );
 
-    if ( 'page' in options )
-      path = path + '&page=' + encodeURIComponent( options.page );
+    if ( 'page' in parameters )
+      path = path + '&page=' + encodeURIComponent( parameters.page );
 
-    if ( 'sortBy' in options )
-      path = path + '&sortBy=' + encodeURIComponent( options.sortBy );
+    if ( 'sortBy' in parameters )
+      path = path + '&sortBy=' + encodeURIComponent( parameters.sortBy );
 
-    if ( 'limit' in options )
-      path = path + '&limit=' + encodeURIComponent( options.limit );
+    if ( 'limit' in parameters )
+      path = path + '&limit=' + encodeURIComponent( parameters.limit );
 
-    if ( 'sortOrder' in options )
-      path = path + '&sortOrder=' + encodeURIComponent( options.sortOrder );
+    if ( 'sortOrder' in parameters )
+      path = path + '&sortOrder=' + encodeURIComponent( parameters.sortOrder );
 
-    if ( 'lifecycleState' in options )
-      path = path + '&lifecycleState=' + encodeURIComponent( options.lifecycleState );
+    if ( 'lifecycleState' in parameters )
+      path = path + '&lifecycleState=' + encodeURIComponent( parameters.lifecycleState );
 
-    if ( 'displayName' in options )
-      path = path + '&displayName=' + encodeURIComponent( options.displayName );
+    if ( 'displayName' in parameters )
+      path = path + '&displayName=' + encodeURIComponent( parameters.displayName );
 
     ocirest.process( auth,
                      { path : auth.RESTversion + '/autonomousDataWarehouseBackups?' + path,
                        host : endpoint.service.database[auth.region],
+                       'opc-request-id' : parameters['opc-request-id'],
                        method : 'GET' },
                       callback );
   };

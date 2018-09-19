@@ -11,40 +11,30 @@ var auth={
     region: 'us-ashburn-1',
     privateKeyPath: '/Users/clbeck/.oci/oci_api_key.pem'
 };
-
-var compartmentId = 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq';
-
-if(auth.privateKeyPath.indexOf("~/") === 0) {
-    auth.privateKeyPath = auth.privateKeyPath.replace("~", os.homedir())
-}
 auth.privateKey = fs.readFileSync(auth.privateKeyPath, 'ascii');
 
-//console.log( auth.privateKey );
 /*
+var compartmentId = 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq';
 var AWDOCID = 'ocid1.autonomousdwdatabase.oc1.iad.abuwcljtbqogthz3o4zffd7tcddcfgl4edoi5ro2chquqk7ufslbgiwsywjq';
+
+oci.database.autonomousDatabase.list( auth, { compartmentId : compartmentId}, function(data){console.log(data[0].dbName);});
+oci.database.autonomousDataWarehouse.list( auth, { compartmentId: compartmentId }, function(data){console.log(data[0].dbName);});
+
 var ATPOCID = 'ocid1.autonomousdatabase.oc1.iad.abuwcljskistzoklbyg2wkmparvlfblisrdc6sjhcltqcqvfs777o4uutjcq';
-
-
-autonomousDatabase.list( compOCID, function(data){ console.log(data); });
-autonomousDatabase.get( ATPOCID, function(data) {console.log(data);})
-
-var options = { "freeformTags" : {"tag1": 123456, "xxx": "yyy", "zzz": "aaa" }};
-autonomousDatabase.update( ATPOCID, options, function(data){console.log(data);} );
-
-*/
-
-//oci.db.autonomousDatabase.list( auth, compartmentId, function(data){console.log(data[0].dbName);});
-//oci.db.autonomousDataWarehouse.list( auth, compartmentId, function(data){console.log(data[0].dbName);});
-
-//var ATPOCID = 'ocid1.autonomousdatabase.oc1.iad.abuwcljskistzoklbyg2wkmparvlfblisrdc6sjhcltqcqvfs777o4uutjcq';
-//var options = { "freeformTags" : {"tag1": 123456, "xxx": "yyy", "zzz": "aaa" }};
+var tags = { "freeformTags" : {"tag1111": 123456, "xxx": "yyy", "zzz": "aaa" }};
+var parameters = {
+    body : tags,
+    autonomousDatabaseId : ATPOCID
+}
 var compOCID = 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq';
-//oci.db.autonomousDatabase.update( auth, ATPOCID, options, function(data){console.log(data);} );
-
-oci.database.autonomousDatabaseBackup.list( auth, {"compartmentId": compOCID }, function(data){console.log(data);} );
+oci.database.autonomousDatabase.update( auth, parameters, function(data){console.log(data);} );
+*/
+//oci.database.autonomousDatabaseBackup.list( auth, {"compartmentId": compOCID }, function(data){console.log(data);} );
 //oci.objectStore.bucket.list(auth, 'oraclecloud431', {compartmentId: compOCID }, function(data){console.log(data);} );
-oci.objectStore.bucket.get(auth, 'oraclecloud431', 'calvin_bucket', function(data){console.log(data);} );
+//oci.objectStore.bucket.get(auth, 'oraclecloud431', 'calvin_bucket', function(data){console.log(data);} );
 
-oci.objectStore.namespace.getMetadata( auth, 'oraclecloud431', function(data){console.log(data);} )
+//oci.objectStore.namespace.getMetadata( auth, 'oraclecloud431', function(data){console.log(data);} )
 
-oci.objectStore.obj.list( auth, 'oraclecloud431', 'calvin_bucket', null, function(data){console.log(data);})
+oci.objectStore.obj.list( auth, { namespaceName: 'oraclecloud431', bucketName: 'calvin_bucket'}, function(data){console.log(data);})
+
+//oci.database.autonomousDatabase.list( auth, { compartmentId: compOCID}, function(data){console.log(data);} );

@@ -4,8 +4,22 @@ var jsSHA = require('jssha');
 
 function process( auth, options, callback ) {
   // begin https request
-  options.headers = { "Content-Type": "application/json" };
-  request = https.request( options, handleResponse(callback));
+  var request = https.request( options, handleResponse(callback));
+
+  // set headers
+  request.setHeader( 'Content-Type', 'application/json' );
+  if ( options['opc-request-id'] !== undefined )
+    request.setHeader( 'opc-request-token', options['opc-request-token'] );
+  if ( options['opc-client-request-id'] !== undefined )
+    request.setHeader( 'opc-client-request-token', options['opc-client-request-token'] );
+  if ( options['opc-retry-token'] !== undefined )
+    request.setHeader( 'opc-retry-token', options['opc-retry-token'] );
+  if ( options['if-match'] !== undefined )
+    request.setHeader( 'if-match', options['if-match'] );
+  if ( options['if-none-match'] !== undefined )
+    request.setHeader( 'if-none-match', options['if-none-match'] );
+  if ( options.range !== undefined )
+    request.setHeader( 'range', options.range );
 
   // sign/authorize the https request for REST call
   var body = JSON.stringify( options.body );
@@ -60,7 +74,5 @@ function handleResponse( callback ) {
 };
 
 module.exports = {
-  process: process,
-  sign: sign,
-  handleResponse: handleResponse
+  process: process
 };

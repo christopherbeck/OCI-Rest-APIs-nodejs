@@ -1,66 +1,81 @@
 var ocirest = require('../../ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
-function create( auth, namespaceName, options, callback ){
+function create( auth, parameters, callback ){
   ocirest.process( auth,
-                   { path : '/n/' +  encodeURIComponent(namespaceName) + '/b/',
+                   { path : '/n/' +  encodeURIComponent(parameters.namespaceName) + 
+                            '/b/',
                      host : endpoint.service.objectStore[auth.region],
                      method : 'POST',
+                     'opc-client-response' : parameters['opc-client-response'],
                      body : options }, 
                    callback );
 }
 
-function update( auth, namespaceName, bucketName, options, callback ) {
+function update( auth, parameters, callback ) {
   ocirest.process( auth,
-                   { path : '/n/' +  encodeURIComponent(namespaceName) + '/b/' + encodeURIComponent(bucketName) + '/',
+                   { path : '/n/' +  encodeURIComponent(parameters.namespaceName) + 
+                            '/b/' + encodeURIComponent(parameters.bucketName) + '/',
                      host : endpoint.service.objectStore[auth.region],
                      method : 'POST',
+                     'opc-client-request-id' : parameters['opc-client-request-id'],
+                     'if-match' : parameters['if-match'],
                      body : options },
                    callback );
 };
 
-function get( auth, namespaceName, bucketName, callback ) {
+function get( auth, parameters, callback ) {
   ocirest.process( auth,
-                   { path : '/n/' +  encodeURIComponent(namespaceName) + '/b/' + encodeURIComponent(bucketName) + '/',
+                   { path : '/n/' +  encodeURIComponent(parameters.namespaceName) + 
+                            '/b/' + encodeURIComponent(parameters.bucketName) + '/',
                      host : endpoint.service.objectStore[auth.region],
+                     'if-match' : parameters['if-match'],
+                     'if-none-match' : parameters['if-none-match'],
+                     'opc-client-request-id' : parameters['opc-client-request-id'],
                      method : 'GET' },
                     callback );
 };
 
-function head( auth, namespaceName, bucketName, callback ) {
+function head( auth, parameters, callback ) {
   ocirest.process( auth,
-                   { path : '/n/' +  encodeURIComponent(namespaceName) + '/b/' + encodeURIComponent(bucketName) + '/',
+                   { path : '/n/' +  encodeURIComponent(parameters.namespaceName) + 
+                            '/b/' + encodeURIComponent(parameters.bucketName) + '/',
                      host : endpoint.service.objectStore[auth.region],
+                     'if-match' : parameters['if-match'],
+                     'if-none-match' : parameters['if-none-match'],
+                     'opc-client-request-id' : parameters['opc-client-request-id'],
                      method : 'HEAD' },
                     callback );
 };
 
-
-function drop( auth, namespaceName, bucketName, callback ) {
+function drop( auth, parameters, callback ) {
   ocirest.process( auth,
-                   { path : '/n/' +  encodeURIComponent(namespaceName) + '/b/' + encodeURIComponent(bucketName) + '/',
+                   { path : '/n/' +  encodeURIComponent(parameters.namespaceName) + 
+                            '/b/' + encodeURIComponent(parameters.bucketName) + '/',
                      host : endpoint.service.objectStore[auth.region],
+                     'if-match' : parameters['if-match'],
+                     'opc-client-request-id' : parameters['opc-client-request-id'],
                      method : 'DELETE' },
                     callback );
 };
 
-function list( auth, namespaceName, options, callback ) {
-  var path = '';
-  if ( 'compartmentId' in options )
-    path = path + 'compartmentId=' + encodeURIComponent( options.compartmentId );
+function list( auth, parameters, callback ) {
+  var query = '';
+  if ( 'limit' in parameters )
+    query = query + '&limit=' + encodeURIComponent( parameters.limit );
 
-  if ( 'limit' in options )
-    path = path + '&limit=' + encodeURIComponent( options.limit );
+  if ( 'page' in parameters )
+    query = query + '&page=' + encodeURIComponent( parameters.page );
 
-  if ( 'page' in options )
-    path = path + '&page=' + encodeURIComponent( options.page );
-
-  if ( 'fields' in options )
-    path = path + '&sortBy=' + encodeURIComponent( options.fields );
+  if ( 'fields' in parameters )
+    query = query + '&fields=' + encodeURIComponent( parameters.fields );
 
   ocirest.process( auth,
-                   { path : '/n/' +  encodeURIComponent(namespaceName) + '/b/?' + path,
+                   { path : '/n/' +  encodeURIComponent(parameters.namespaceName) + 
+                            '/b/' + '?compartmentId=' + encodeURIComponent(parameters.compartmentId) + 
+                            query,
                      host : endpoint.service.objectStore[auth.region],
+                     'opc-client-request-id' : parameters['opc-client-request-id'],
                      method : 'GET' },
                     callback );
 };

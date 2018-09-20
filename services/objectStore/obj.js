@@ -18,7 +18,8 @@ function list( auth, parameters, callback ){
 
   ocirest.process( auth,
                    { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
-                            '/b/' + encodeURIComponent(parameters.bucketName) + '/o' +
+                            '/b/' + encodeURIComponent(parameters.bucketName) + 
+                            '/o' +
                             query,
                      host : endpoint.service.objectStore[auth.region],
                      'opc-client-request-id' : parameters['opc-client-request-id'],
@@ -29,7 +30,7 @@ function list( auth, parameters, callback ){
 function get( auth, parameters, callback ){
   ocirest.process( auth,
                    { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
-                            '/b/' + encodeURIComponent(parameters.bucketName) + '/o' +
+                            '/b/' + encodeURIComponent(parameters.bucketName) +
                             '/o/' + encodeURIComponent(parameters.objectName),
                      host : endpoint.service.objectStore[auth.region],
                      'opc-client-request-id' : parameters['opc-client-request-id'],
@@ -43,7 +44,7 @@ function get( auth, parameters, callback ){
 function head( auth, parameters, callback ){
   ocirest.process( auth,
                    { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
-                            '/b/' + encodeURIComponent(parameters.bucketName) + '/o' +
+                            '/b/' + encodeURIComponent(parameters.bucketName) +
                             '/o/' + encodeURIComponent(parameters.objectName),
                      host : endpoint.service.objectStore[auth.region],
                      'opc-client-request-id' : parameters['opc-client-request-id'],
@@ -64,6 +65,18 @@ function rename( auth, parameters, callback ){
                    callback );
 }
 
+function drop( auth, parameters, callback ){
+  ocirest.process( auth,
+                   { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
+                            '/b/' + encodeURIComponent(parameters.bucketName) + '/o' +
+                            '/o/' + encodeURIComponent(parameters.objectName),
+                     host : endpoint.service.objectStore[auth.region],
+                     'opc-client-request-id' : parameters['opc-client-request-id'],
+                     'if-match' : parameters['if-match'],
+                     method : 'DELETE' },
+                   callback );
+}
+
 
 
 
@@ -71,5 +84,6 @@ module.exports = {
     list: list,
     get: get,
     head: head,
-    rename: rename
+    rename: rename,
+    drop: drop
 }

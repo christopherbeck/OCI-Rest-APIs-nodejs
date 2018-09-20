@@ -34,7 +34,7 @@ var parameters = {
 
 //oci.objectStore.obj.list( auth, { namespaceName: 'oraclecloud431', bucketName: 'calvin_bucket'}, function(data){console.log(data);})
 
-//compOCID = 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq';
+compOCID = 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq';
 //oci.database.autonomousDatabase.list( auth, { compartmentId: compOCID}, function(data){console.log(data);} );
 
 parameters = {
@@ -43,4 +43,32 @@ parameters = {
   body : { sourceName: 'part1.csv', newName: "part1_new.csv" }
 };
 
-oci.objectStore.obj.rename( auth, parameters, function(data){console.log(data);} );
+//oci.objectStore.obj.rename( auth, parameters, function(data){console.log(data);} );
+
+parameters = {
+    namespaceName : 'oraclecloud431',
+    bucketName : 'Lu_bucket',
+    limit : 5,
+    page : 1
+}
+
+var query = '';
+var queryParameterExists = false;
+if( 'objectNamePrefix' in parameters ){
+  query = query + ( queryParameterExists ? '&' : '?' ) +
+          'objectNamePrefix=' + encodeURIComponent(parameters.objectNamePrefix);
+  queryParameterExists = true;
+}
+if( 'limit' in parameters ){
+  query = query + ( queryParameterExists ? '&' : '?' ) +
+          'limit=' + encodeURIComponent(parameters.limit);
+  queryParameterExists = true;
+}
+if( 'page' in parameters ){
+  query = query + ( queryParameterExists ? '&' : '?' ) +
+          'page=' + encodeURIComponent(parameters.page);
+  queryParameterExists = true;
+}
+
+console.log( query );
+oci.objectStore.preauthenticatedRequest.list( auth, parameters, function(data){console.log(data);} );

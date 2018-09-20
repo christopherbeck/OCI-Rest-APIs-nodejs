@@ -35,22 +35,22 @@ function list( auth, parameters, callback ) {
     var query = '';
     var queryParameterExists = false;
     if( 'databaseId' in parameters ){
-      query = query + queryParameterExists?'&':'/?' +
+      query = query + (queryParameterExists?'&':'/?') +
               'databaseId=' + encodeURIComponent(parameters.datbaseId);
       queryParameterExists = true;
     }
     if( 'compartmentId' in parameters ){
-      query = query + queryParameterExists?'&':'/?' +
+      query = query + (queryParameterExists?'&':'/?') +
               'compartmentId=' + encodeURIComponent(parameters.compartmentId);
       queryParameterExists = true;
     }
     if( 'limit' in parameters ){
-      query = query + queryParameterExists?'&':'/?' +
+      query = query + (queryParameterExists?'&':'/?') +
               'limit=' + encodeURIComponent(parameters.limit);
       queryParameterExists = true;
     }
     if( 'page' in parameters ){
-      query = query + queryParameterExists?'&':'/?' +
+      query = query + (queryParameterExists?'&':'/?') +
               'page=' + encodeURIComponent(parameters.page);
       queryParameterExists = true;
     }

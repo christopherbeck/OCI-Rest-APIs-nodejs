@@ -1,5 +1,5 @@
-var ocirest = require('./ocirest.js');
-var endpoint = require('./endpoints.js');
+var ocirest = require('../../ocirest.js');
+var endpoint = require('../../configs/endpoints.js');
 
 function get( auth, parameters, callback ) {
   ocirest.process( auth,

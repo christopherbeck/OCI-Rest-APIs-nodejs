@@ -53,9 +53,23 @@ function head( auth, parameters, callback ){
                    callback );
 }
 
+function rename( auth, parameters, callback ){
+  ocirest.process( auth,
+                   { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
+                            '/b/' + encodeURIComponent(parameters.bucketName) + '/actions/renameObject',
+                     host : endpoint.service.objectStore[auth.region],
+                     'opc-client-request-id' : parameters['opc-client-request-id'],
+                     method : 'POST',
+                     body : parameters.body },
+                   callback );
+}
+
+
+
 
 module.exports = {
     list: list,
     get: get,
-    head: head
+    head: head,
+    rename: rename
 }

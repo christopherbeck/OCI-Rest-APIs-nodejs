@@ -25,7 +25,7 @@ var parameters = {
     body : tags,
     autonomousDatabaseId : ATPOCID
 }
-oci.database.autonomousDatabase.update( auth, parameters, function(data){console.log(data);} );
+//oci.database.autonomousDatabase.update( auth, parameters, function(data){console.log(data);} );
 //oci.database.autonomousDatabaseBackup.list( auth, {"compartmentId": compOCID }, function(data){console.log(data);} );
 //oci.objectStore.bucket.list(auth, 'oraclecloud431', {compartmentId: compOCID }, function(data){console.log(data);} );
 //oci.objectStore.bucket.get(auth, 'oraclecloud431', 'calvin_bucket', function(data){console.log(data);} );
@@ -36,3 +36,11 @@ oci.database.autonomousDatabase.update( auth, parameters, function(data){console
 
 //compOCID = 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq';
 //oci.database.autonomousDatabase.list( auth, { compartmentId: compOCID}, function(data){console.log(data);} );
+
+parameters = {
+  namespaceName: 'oraclecloud431',
+  bucketName: 'calvin_bucket',
+  body : { sourceName: 'part1.csv', newName: "part1_new.csv" }
+};
+
+oci.objectStore.obj.rename( auth, parameters, function(data){console.log(data);} );

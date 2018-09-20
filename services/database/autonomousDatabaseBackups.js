@@ -14,7 +14,8 @@ function create( auth, parameters, callback ){
 
  function get( auth, parameters, callback ) {
     ocirest.process( auth,
-                     { path : auth.RESTversion + '/autonomousDatabaseBackups/' + encodeURIComponent(parameters.autonomousDatabaseBackupId),
+                     { path : auth.RESTversion + '/autonomousDatabaseBackups/' + 
+                              encodeURIComponent(parameters.autonomousDatabaseBackupId),
                        host : endpoint.service.database[auth.region],
                        'opc-request-id' : parameters['opc-request-id'],
                        method : 'POST' },
@@ -22,36 +23,36 @@ function create( auth, parameters, callback ){
   };
 
   function list( auth, parameters, callback ) {
-    var path = '';
+    var query = '';
     if ( 'autonomousdatabaseId' in parameters )
-      path = path + 'autonomousdatabaseId=' + encodeURIComponent( parameters.autonomousdatabaseId );
+      query = query + 'autonomousdatabaseId=' + encodeURIComponent( parameters.autonomousdatabaseId );
 
     if ( 'compartmentId' in parameters )
-      path = path + 'compartmentId=' + encodeURIComponent( parameters.compartmentId );
+      query = query + 'compartmentId=' + encodeURIComponent( parameters.compartmentId );
 
     if ( 'limit' in parameters )
-      path = path + '&limit=' + encodeURIComponent( parameters.limit );
+      query = query + '&limit=' + encodeURIComponent( parameters.limit );
 
     if ( 'page' in parameters )
-      path = path + '&page=' + encodeURIComponent( parameters.page );
+      query = query + '&page=' + encodeURIComponent( parameters.page );
 
     if ( 'sortBy' in parameters )
-      path = path + '&sortBy=' + encodeURIComponent( parameters.sortBy );
+      query = query + '&sortBy=' + encodeURIComponent( parameters.sortBy );
 
     if ( 'limit' in parameters )
-      path = path + '&limit=' + encodeURIComponent( parameters.limit );
+      query = query + '&limit=' + encodeURIComponent( parameters.limit );
 
     if ( 'sortOrder' in parameters )
-      path = path + '&sortOrder=' + encodeURIComponent( parameters.sortOrder );
+      query = query + '&sortOrder=' + encodeURIComponent( parameters.sortOrder );
 
     if ( 'lifecycleState' in parameters )
-      path = path + '&lifecycleState=' + encodeURIComponent( parameters.lifecycleState );
+      query = query + '&lifecycleState=' + encodeURIComponent( parameters.lifecycleState );
 
     if ( 'displayName' in parameters )
-      path = path + '&displayName=' + encodeURIComponent( parameters.displayName );
+      query = query + '&displayName=' + encodeURIComponent( parameters.displayName );
 
     ocirest.process( auth,
-                     { path : auth.RESTversion + '/autonomousDatabaseBackups?' + path,
+                     { path : auth.RESTversion + '/autonomousDatabaseBackups?' + query,
                        host : endpoint.service.database[auth.region],
                        'opc-request-id' : parameters['opc-request-id'],
                        method : 'GET' },

@@ -14,7 +14,8 @@ function create( auth, parameters, callback ){
 
 function drop( auth, parameters, callback ) {
   ocirest.process( auth,
-                   { 'path' : auth.RESTversion + '/autonomousDataWarehouses/' + encodeURIComponent(parameters.autonomousDataWarehouseId),
+                   { 'path' : auth.RESTversion + '/autonomousDataWarehouses/' + 
+                              encodeURIComponent(parameters.autonomousDataWarehouseId),
                      'host' : endpoint.service.database[auth.region],
                      'method' : 'DELETE',
                      'if-match' : parameters['if-match'] },
@@ -23,29 +24,30 @@ function drop( auth, parameters, callback ) {
 
 function get( auth, parameters, callback ) {
   ocirest.process( auth,
-                   { 'path' : auth.RESTversion + '/autonomousDataWarehouses/' + encodeURIComponent(parameters.autonomousDataWarehouseId),
+                   { 'path' : auth.RESTversion + '/autonomousDataWarehouses/' + 
+                              encodeURIComponent(parameters.autonomousDataWarehouseId),
                      'host' : endpoint.service.database[auth.region],
                      'method' : 'POST' },
                     callback );
 };
 
 function list( auth, parameters, callback ) {
-  var path = '';
-  path = path + '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
+  var query = '';
+  query = query + '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
   if ( parameters.limit !== undefined )
-    path = path + '&limit=' + encodeURIComponent(parameters.limit);
+    query = query + '&limit=' + encodeURIComponent(parameters.limit);
   if ( parameters.page !== undefined )
-    path = path + '&page=' + encodeURIComponent(parameters.page);
+    query = query + '&page=' + encodeURIComponent(parameters.page);
   if ( parameters.sortBy !== undefined )
-    path = path + '&sortBy=' + encodeURIComponent(parameters.sortBy);
+    query = query + '&sortBy=' + encodeURIComponent(parameters.sortBy);
   if ( parameters.sortOrder !== undefined )
-    path = path + '&sortOrder=' + encodeURIComponent(parameters.sortOrder);
+    query = query + '&sortOrder=' + encodeURIComponent(parameters.sortOrder);
   if ( parameters.lifecycleState !== undefined )
-    path = path + '&lifecycleState=' + encodeURIComponent(parameters.lifecycleState);
+    query = query + '&lifecycleState=' + encodeURIComponent(parameters.lifecycleState);
   if ( parameters.displayName !== undefined )
-    path = path + '&displayName=' + encodeURIComponent(parameters.displayName);
+    query = query + '&displayName=' + encodeURIComponent(parameters.displayName);
 
-  headers = { 'path' : auth.RESTversion + '/autonomousDataWarehouses' + path,
+  headers = { 'path' : auth.RESTversion + '/autonomousDataWarehouses' + query,
               'host' : endpoint.service.database[auth.region],
               'method' : 'GET',
               'content-type' : 'application/json' };
@@ -54,7 +56,9 @@ function list( auth, parameters, callback ) {
 
 function restore( auth, parameters, callback ) {
   ocirest.process( auth,
-                   { path: auth.RESTversion + '/autonomousDataWarehouses/' + encodeURIComponent(parameters.autonomousDataWarehouseId) + '/actions/restore',
+                   { path: auth.RESTversion + '/autonomousDataWarehouses/' + 
+                           encodeURIComponent(parameters.autonomousDataWarehouseId) + 
+                           '/actions/restore',
                      host : endpoint.service.database[auth.region],
                      method : 'PUT',
                     'if-match' : parameters['if-match'],
@@ -64,7 +68,9 @@ function restore( auth, parameters, callback ) {
 
 function start( auth, parameters, callback ) {
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/autonomousDataWarehouses/' + encodeURIComponent(parameters.autonomousDataWarehouseId) + '/actions/start',
+                   { path : auth.RESTversion + '/autonomousDataWarehouses/' + 
+                            encodeURIComponent(parameters.autonomousDataWarehouseId) + 
+                            '/actions/start',
                      host : endpoint.service.database[auth.region],
                     'if-match' : parameters['if-match'],
                      method : 'POST' },
@@ -73,7 +79,9 @@ function start( auth, parameters, callback ) {
 
 function stop( auth, parameters, callback ) {
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/autonomousDataWarehouses/' + encodeURIComponent(parameters.autonomousDataWarehouseId) + '/actions/stop',
+                   { path : auth.RESTversion + '/autonomousDataWarehouses/' + 
+                            encodeURIComponent(parameters.autonomousDataWarehouseId) + 
+                            '/actions/stop',
                     'if-match' : parameters['if-match'],
                      host : endpoint.service.database[auth.region],
                      method : 'POST' },
@@ -82,7 +90,8 @@ function stop( auth, parameters, callback ) {
 
 function update( auth, parameters, callback ) {
   ocirest.process( auth,
-                   { path: auth.RESTversion + '/autonomousDataWarehouses/' + encodeURIComponent(parameters.autonomousDataWarehouseId),
+                   { path: auth.RESTversion + '/autonomousDataWarehouses/' + 
+                           encodeURIComponent(parameters.autonomousDataWarehouseId),
                      host : endpoint.service.database[auth.region],
                      method : 'PUT',
                     'if-match' : parameters['if-match'],

@@ -27,7 +27,7 @@ function get( auth, parameters, callback ) {
                    { path : auth.RESTversion + '/autonomousDatabases/' + 
                             encodeURIComponent(parameters.autonomousDatabaseId),
                      host : endpoint.service.database[auth.region],
-                     method : 'POST' },
+                     method : 'GET' },
                     callback );
 };
 

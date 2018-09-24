@@ -46,12 +46,10 @@ parameters = {
 //oci.objectStore.obj.rename( auth, parameters, function(data){console.log(data);} );
 
 parameters = {
-    namespaceName : 'oraclecloud431',
-    bucketName : 'Lu_bucket',
-    limit : 5,
-    page : 1
+    compartmentId : 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq',
+    namespaceName : 'oraclecloud431'
 }
-
+/*
 var query = '';
 var queryParameterExists = false;
 if( 'objectNamePrefix' in parameters ){
@@ -71,4 +69,6 @@ if( 'page' in parameters ){
 }
 
 console.log( query );
-oci.objectStore.preauthenticatedRequest.list( auth, parameters, function(data){console.log(data);} );
+*/
+
+oci.objectStore.bucket.list( auth, parameters, function(data){console.log(data);} );

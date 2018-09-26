@@ -1,0 +1,20 @@
+var ocirest = require('../../ocirest.js');
+var endpoint = require('../../configs/endpoints.js');
+
+
+function list( auth, parameters, callback ) {
+    var query = '';
+    query = query + '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
+    
+  
+    ocirest.process( auth, 
+                     { path : auth.RESTversion + '/availabilityDomains/' + query,
+                       host : endpoint.service.identity[auth.region],
+                       method : 'GET' }, 
+                     callback );
+  };
+
+  
+  module.exports={
+      list: list
+  }

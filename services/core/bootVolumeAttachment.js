@@ -29,32 +29,21 @@ function list( auth, parameters, callback ) {
     query = query + '&limit=' + encodeURIComponent(parameters.limit);
   if ( parameters.page !== undefined )
     query = query + '&page=' + encodeURIComponent(parameters.page);
-  if ( parameters.volumeGroupId !== undefined )
-    query = query + '&volumeGroupId=' + encodeURIComponent(parameters.volumeGroupId);
+  if ( parameters.instanceId !== undefined )
+    query = query + '&instanceId=' + encodeURIComponent(parameters.instanceId);
+  if ( parameters.bootVolumeId !== undefined )
+    query = query + '&bootVolumeId=' + encodeURIComponent(parameters.bootVolumeId);
 
   ocirest.process( auth, 
-                   { path : auth.RESTversion + '/bootVolumes' + query,
+                   { path : auth.RESTversion + '/bootVolumeAttachments/' + query,
                      host : endpoint.service.core[auth.region],
                      method : 'GET' }, 
                    callback );
 };
 
-function update( auth, parameters, callback ) {
-  ocirest.process( auth,
-                   { path: auth.RESTversion + '/bootVolumes/' + 
-                           encodeURIComponent(parameters.bootVolumeId),
-                     host : endpoint.service.core[auth.region],
-                     method : 'PUT',
-                    'if-match' : parameters['if-match'],
-                     body : parameters.body },
-                   callback );
-};
 
 module.exports = {
     list: list,
-    update: update,
-    get: get,
-    detach: detach,
-    create: create,
-    drop: drop
+    attach: attach,
+    get: get
     };

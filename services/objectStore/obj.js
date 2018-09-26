@@ -57,7 +57,8 @@ function head( auth, parameters, callback ){
 function rename( auth, parameters, callback ){
   ocirest.process( auth,
                    { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
-                            '/b/' + encodeURIComponent(parameters.bucketName) + '/actions/renameObject',
+                            '/b/' + encodeURIComponent(parameters.bucketName) + 
+                            '/actions/renameObject',
                      host : endpoint.service.objectStore[auth.region],
                      'opc-client-request-id' : parameters['opc-client-request-id'],
                      method : 'POST',
@@ -65,10 +66,23 @@ function rename( auth, parameters, callback ){
                    callback );
 }
 
+function restore( auth, parameters, callback ){
+  ocirest.process( auth,
+                   { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
+                            '/b/' + encodeURIComponent(parameters.bucketName) + 
+                            '/actions/restoreObjects',
+                     host : endpoint.service.objectStore[auth.region],
+                     'opc-client-request-id' : parameters['opc-client-request-id'],
+                     method : 'POST',
+                     body : parameters.body },
+                   callback );
+}
+
+
 function drop( auth, parameters, callback ){
   ocirest.process( auth,
                    { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
-                            '/b/' + encodeURIComponent(parameters.bucketName) + '/o' +
+                            '/b/' + encodeURIComponent(parameters.bucketName) + 
                             '/o/' + encodeURIComponent(parameters.objectName),
                      host : endpoint.service.objectStore[auth.region],
                      'opc-client-request-id' : parameters['opc-client-request-id'],
@@ -85,5 +99,6 @@ module.exports = {
     get: get,
     head: head,
     rename: rename,
+    restore: restore,
     drop: drop
 }

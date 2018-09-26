@@ -71,4 +71,5 @@ if( 'page' in parameters ){
 console.log( query );
 */
 
-oci.objectStore.bucket.list( auth, parameters, function(data){console.log(data);} );
+//oci.objectStore.bucket.list( auth, parameters, function(data){console.log(data);} );
+oci.iam.availabilityDomain.list( auth, parameters, function(data){console.log(data);} );

@@ -57,7 +57,8 @@ function list( auth, parameters, callback ) {
 function restore( auth, parameters, callback ) {
   ocirest.process( auth,
                    { path: auth.RESTversion + '/autonomousDatabases/' + 
-                           encodeURIComponent(parameters.autonomousDatabaseId) + '/actions/restore',
+                           encodeURIComponent(parameters.autonomousDatabaseId) + 
+                           '/actions/restore',
                      host : endpoint.service.database[auth.region],
                      method : 'PUT',
                     'if-match' : parameters['if-match'],
@@ -68,7 +69,8 @@ function restore( auth, parameters, callback ) {
 function start( auth, parameters, callback ) {
   ocirest.process( auth,
                    { path : auth.RESTversion + '/autonomousDatabases/' + 
-                            encodeURIComponent(parameters.autonomousDatabaseId) + '/actions/start',
+                            encodeURIComponent(parameters.autonomousDatabaseId) + 
+                            '/actions/start',
                      host : endpoint.service.database[auth.region],
                     'if-match' : parameters['if-match'],
                      method : 'POST' },
@@ -78,7 +80,8 @@ function start( auth, parameters, callback ) {
 function stop( auth, parameters, callback ) {
   ocirest.process( auth,
                    { path : auth.RESTversion + '/autonomousDatabases/' + 
-                            encodeURIComponent(parameters.autonomousDatabaseId) + '/actions/stop',
+                            encodeURIComponent(parameters.autonomousDatabaseId) + 
+                            '/actions/stop',
                     'if-match' : parameters['if-match'],
                      host : endpoint.service.database[auth.region],
                      method : 'POST' },

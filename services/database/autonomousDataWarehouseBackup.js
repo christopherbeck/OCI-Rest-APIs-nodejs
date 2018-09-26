@@ -24,35 +24,27 @@ function create( auth, parameters, callback ){
 
   function list( auth, parameters, callback ) {
     var query = '';
-    if ( 'autonomousdatabaseId' in parameters )
-      query = query + 'autonomousdatabaseId=' + encodeURIComponent( parameters.autonomousdatabaseId );
-
+    if ( 'autonomousDataWarehouseId' in parameters )
+      query = query + '?autonomousDataWarehouseId=' + encodeURIComponent( parameters.autonomousdatabaseId );
     if ( 'compartmentId' in parameters )
-      query = query + 'compartmentId=' + encodeURIComponent( parameters.compartmentId );
-
+      query = query + (query==''?'?':'&') + 'compartmentId=' + encodeURIComponent( parameters.compartmentId );
     if ( 'limit' in parameters )
-      query = query + '&limit=' + encodeURIComponent( parameters.limit );
-
+      query = query + (query==''?'?':'&') + 'limit=' + encodeURIComponent( parameters.limit );
     if ( 'page' in parameters )
-      query = query + '&page=' + encodeURIComponent( parameters.page );
-
+      query = query + (query==''?'?':'&') + 'page=' + encodeURIComponent( parameters.page );
     if ( 'sortBy' in parameters )
-      query = query + '&sortBy=' + encodeURIComponent( parameters.sortBy );
-
+      query = query + (query==''?'?':'&') + 'sortBy=' + encodeURIComponent( parameters.sortBy );
     if ( 'limit' in parameters )
-      query = query + '&limit=' + encodeURIComponent( parameters.limit );
-
+      query = query + (query==''?'?':'&') + 'limit=' + encodeURIComponent( parameters.limit );
     if ( 'sortOrder' in parameters )
-      query = query + '&sortOrder=' + encodeURIComponent( parameters.sortOrder );
-
+      query = query + (query==''?'?':'&') + 'sortOrder=' + encodeURIComponent( parameters.sortOrder );
     if ( 'lifecycleState' in parameters )
-      query = query + '&lifecycleState=' + encodeURIComponent( parameters.lifecycleState );
-
+      query = query + (query==''?'?':'&') + 'lifecycleState=' + encodeURIComponent( parameters.lifecycleState );
     if ( 'displayName' in parameters )
-      query = query + '&displayName=' + encodeURIComponent( parameters.displayName );
+      query = query + (query==''?'?':'&') + 'displayName=' + encodeURIComponent( parameters.displayName );
 
     ocirest.process( auth,
-                     { path : auth.RESTversion + '/autonomousDataWarehouseBackups?' + query,
+                     { path : auth.RESTversion + '/autonomousDataWarehouseBackups' + query,
                        host : endpoint.service.database[auth.region],
                        'opc-request-id' : parameters['opc-request-id'],
                        method : 'GET' },

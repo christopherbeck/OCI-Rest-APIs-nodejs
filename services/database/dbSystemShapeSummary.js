@@ -9,7 +9,7 @@ function list( auth, parameters, callback ) {
       query = query + '&page=' + encodeURIComponent(parameters.page);
     
     ocirest.process( auth,
-                     { path : auth.RESTversion + '/dbSystemSpahes' + 
+                     { path : auth.RESTversion + '/dbSystemShapes' + 
                               '?availabilityDomain=' + encodeURIComponent(parameters.availabilityDomain) +
                               '&compartmentId=' + encodeURIComponent(parameters.compartmentId) +
                               query,

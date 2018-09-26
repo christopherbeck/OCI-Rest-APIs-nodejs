@@ -1,5 +1,9 @@
 var availabilityDomain = require( './iam/availabilityDomain.js' );
+var availabilityDomain = require( './iam/apiKey.js' );
+var availabilityDomain = require( './iam/authToken.js' );
 
 module.exports = {
-    availabilityDomain: availabilityDomain
+    availabilityDomain: availabilityDomain,
+    apiKey: apiKey,
+    authToken: authToken
 }

@@ -13,7 +13,8 @@ function create( auth, parameters, callback ) {
 
 function drop( auth, parameters, callback ) {
     ocirest.process( auth,
-                     { path : auth.RESTversion + '/policies/' + encodeURIComponent(parameters.policyId),
+                     { path : auth.RESTversion + 
+                              '/policies/' + encodeURIComponent(parameters.policyId),
                        host : endpoint.service.iam[auth.region],
                        method : 'DELETE',
                        'if-match' : parameters['if-match'] },
@@ -22,7 +23,8 @@ function drop( auth, parameters, callback ) {
 
 function get( auth, parameters, callback ) {
     ocirest.process( auth, 
-                     { path : auth.RESTversion + '/policies/' + encodeURIComponent(parameters.policyId),
+                     { path : auth.RESTversion + 
+                              '/policies/' + encodeURIComponent(parameters.policyId),
                        host : endpoint.service.iam[auth.region],
                        method : 'GET' }, 
                      callback );
@@ -31,13 +33,13 @@ function get( auth, parameters, callback ) {
 function list( auth, parameters, callback ) {
     var query = '';
     query = '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
-    query = query + 'protocol=' + encodeURIComponent(parameters.protocol);
     if ( 'page' in parameters )
       query = query + '&page=' + encodeURIComponent(parameters.page);
     if ( 'limit' in parameters )
       query = query + '&limit=' + encodeURIComponent(parameters.limit);
     ocirest.process( auth, 
-                     { path : auth.RESTversion + '/policies/' + encodeURIComponent(parameters.policyId),
+                     { path : auth.RESTversion + 
+                              '/policies/' + encodeURIComponent(parameters.policyId) + query,
                        host : endpoint.service.iam[auth.region],
                        method : 'GET' }, 
                      callback );

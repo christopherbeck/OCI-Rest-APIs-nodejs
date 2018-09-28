@@ -1,5 +1,14 @@
 var service = 
-  { database : { 'us-phoenix-1' : 'database.us-phoenix-1.oraclecloud.com',
+  {
+    audit : { 'us-phoenix-1' : 'audit.us-phoenix-1.oraclecloud.com',
+              'us-ashburn-1' : 'audit.us-ashburn-1.oraclecloud.com',
+              'eu-frankfurt-1' : 'audit.eu-frankfurt-1.oraclecloud.com',
+              'uk-london-1' : 'audit.uk-london-1.oraclecloud.com' } ,
+    containerEngine : { 'us-phoenix-1' : 'containerEngine.us-phoenix-1.oraclecloud.com',
+                        'us-ashburn-1' : 'containerEngine.us-ashburn-1.oraclecloud.com',
+                        'eu-frankfurt-1' : 'containerEngine.eu-frankfurt-1.oraclecloud.com',
+                        'uk-london-1' : 'containerEngine.uk-london-1.oraclecloud.com' } ,
+    database : { 'us-phoenix-1' : 'database.us-phoenix-1.oraclecloud.com',
                  'us-ashburn-1' : 'database.us-ashburn-1.oraclecloud.com',
                  'eu-frankfurt-1' : 'database.eu-frankfurt-1.oraclecloud.com',
                  'uk-london-1' : 'database.uk-london-1.oraclecloud.com' } ,

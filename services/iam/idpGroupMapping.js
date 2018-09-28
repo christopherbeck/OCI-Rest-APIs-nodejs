@@ -37,7 +37,6 @@ function get( auth, parameters, callback ) {
 function list( auth, parameters, callback ) {
     var query = '';
     query = '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
-    query = query + 'protocol=' + encodeURIComponent(parameters.protocol);
     if ( 'page' in parameters )
       query = query + '&page=' + encodeURIComponent(parameters.page);
     if ( 'limit' in parameters )
@@ -45,7 +44,7 @@ function list( auth, parameters, callback ) {
     ocirest.process( auth, 
                      { path : auth.RESTversion + 
                               '/identityProviders/' + encodeURIComponent(parameters.identityProviderId) +
-                              '/groupMappings/',
+                              '/groupMappings/' + query,
                        host : endpoint.service.iam[auth.region],
                        method : 'GET' }, 
                      callback );

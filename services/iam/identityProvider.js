@@ -38,7 +38,7 @@ function list( auth, parameters, callback ) {
     if ( 'limit' in parameters )
       query = query + '&limit=' + encodeURIComponent(parameters.limit);
     ocirest.process( auth, 
-                     { path : auth.RESTversion + '/identityProviders/',
+                     { path : auth.RESTversion + '/identityProviders/' + query,
                        host : endpoint.service.iam[auth.region],
                        method : 'GET' }, 
                      callback );

@@ -3,8 +3,8 @@ var endpoint = require('../../configs/endpoints.js');
 
 function create( auth, parameters, callback ) {
     ocirest.process( auth,
-                     { path : auth.RESTversion + '/groups/',
-                       host : endpoint.service.iam[auth.region],
+                     { path : auth.RESTversion + '/crossConnectGroups',
+                       host : endpoint.service.core[auth.region],
                        method : 'POST',
                        body : parameters.body,
                        'opc-retry-token' : parameters['opc-retry-token'] },
@@ -14,8 +14,8 @@ function create( auth, parameters, callback ) {
 function drop( auth, parameters, callback ) {
     ocirest.process( auth,
                      { path : auth.RESTversion + 
-                              '/groups/' + encodeURIComponent(parameters.groupId),
-                       host : endpoint.service.iam[auth.region],
+                      '/crossConnectGroups/' + encodeURIComponent(parameters.crossConnectGroupId),
+                       host : endpoint.service.core[auth.region],
                        method : 'DELETE',
                        'if-match' : parameters['if-match'] },
                       callback )
@@ -23,8 +23,9 @@ function drop( auth, parameters, callback ) {
 
 function get( auth, parameters, callback ) {
     ocirest.process( auth, 
-                     { path : auth.RESTversion + '/groups/' + encodeURIComponent(parameters.groupId),
-                       host : endpoint.service.iam[auth.region],
+                     { path : auth.RESTversion + 
+                              '/crossConnectGroups/' + encodeURIComponent(parameters.crossConnectGroupId),
+                       host : endpoint.service.core[auth.region],
                        method : 'GET' }, 
                      callback );
   };
@@ -36,17 +37,27 @@ function list( auth, parameters, callback ) {
       query = query + '&page=' + encodeURIComponent(parameters.page);
     if ( 'limit' in parameters )
       query = query + '&limit=' + encodeURIComponent(parameters.limit);
+    if ( 'displayName' in parameters )
+      query = query + '&displayName=' + encodeURIComponent(parameters.displayName);
+    if ( 'sortBy' in parameters )
+      query = query + '&sortBy=' + encodeURIComponent(parameters.sortBy);
+    if ( 'sortOrder' in parameters )
+      query = query + '&sortOrder=' + encodeURIComponent(parameters.sortOrder);
+    if ( 'lifecycleState' in parameters )
+      query = query + '&lifecycleState=' + encodeURIComponent(parameters.lifecycleState);
     ocirest.process( auth, 
-                     { path : auth.RESTversion + '/groups/' + query,
-                       host : endpoint.service.iam[auth.region],
+                     { path : auth.RESTversion + 
+                      '/crossConnectGroups' + query,
+                       host : endpoint.service.core[auth.region],
                        method : 'GET' }, 
                      callback );
   };
 
 function update( auth, parameters, callback ) {
     ocirest.process( auth, 
-                     { path : auth.RESTversion + '/groups/' + encodeURIComponent(parameters.groupId),
-                       host : endpoint.service.iam[auth.region],
+                     { path : auth.RESTversion + 
+                              '/crossConnectGroups/' + encodeURIComponent(parameters.crossConnectGroupId),
+                       host : endpoint.service.core[auth.region],
                        'if-match' : parameters['if-match'],
                        body : parameters.body,
                        method : 'PUT' }, 

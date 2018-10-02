@@ -47,6 +47,7 @@ parameters = {
 
 parameters = {
     compartmentId : 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq',
+    vncId: 'ocid1.vcn.oc1.iad.aaaaaaaanoct32jijolnwc7vzwwgnwvsdtwdqjwlgzvlfx4o6as2v4unam7q',
     namespaceName : 'oraclecloud431'
 }
 /*
@@ -72,4 +73,7 @@ console.log( query );
 */
 
 //oci.objectStore.bucket.list( auth, parameters, function(data){console.log(data);} );
-oci.iam.availabilityDomain.list( auth, parameters, function(data){console.log(data);} );
+//oci.iam.availabilityDomain.list( auth, parameters, function(data){console.log(data);} );
+oci.core.shape.list( auth, parameters, function(data){console.log(data);} );
+oci.core.subnet.list( auth, parameters, function(data){console.log(data);} );
+oci.core.vcn.list( auth, parameters, function(data){console.log(data);} );

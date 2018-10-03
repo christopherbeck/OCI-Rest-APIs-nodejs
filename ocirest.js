@@ -16,6 +16,10 @@ function process( auth, options, callback ) {
     request.setHeader( 'opc-retry-token', options['opc-retry-token'] );
   if ( options['if-match'] !== undefined )
     request.setHeader( 'if-match', options['if-match'] );
+  if ( options['If-Match'] !== undefined )
+    request.setHeader( 'If-Match', options['If-Match'] );
+  if ( options['If-Unmodified-Since'] !== undefined )
+    request.setHeader( 'If-Unmodified-Since', options['If-Unmodified-Since'] );
   if ( options['if-none-match'] !== undefined )
     request.setHeader( 'if-none-match', options['if-none-match'] );
   if ( options.range !== undefined )

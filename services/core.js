@@ -2,27 +2,27 @@ var bootVolume = require( './core/bootVolume.js' );
 var bootVolumeAttachment = require( './core/bootVolumeAttachment.js' );
 var consoleHistory = require( './core/consoleHistory.js' );
 var cpe = require( './core/cpe.js' );
-var crossConnect = ( './core/crossConnect.js' );
-var crossConnectGroup = ( './core/crossConnectGroup.js' );
-var crossConnectLocation = ( './core/crossConnectLocation.js' );
-var crossConnectPortSpeedShape = ( './core/crossConnectPortSpeedShape.js' );
-var crossConnectStatus = ( './core/crossConnectStatus.js' );
-var dhcpOptions = ( './core/dhcpOptions.js' );
-var drg = ( './core/drg.js' );
-var drgAttachment = ( './core/drgAttachment.js' );
-var fastConnectProviderServices = ( './core/fastConnectProviderServices.js' );
-var image = ( './core/image.js' );
-var instance = ( './core/instance.js' );
-var instanceConsoleConnection = ( './core/instanceConsoleConnection.js' );
-var instanceCredential = ( './core/instanceCredential.js' );
-var internetGateway = ( './core/internetGateway.js' );
-var ipSecConnection = ( './core/ipSecConnection.js' );
-var ipSecConnectionDeviceConfig = ( './core/ipSecConnectionDeviceConfig.js' );
-var ipSecConnectionDeviceStatus = ( './core/ipSecConnectionDeviceStatus.js' );
-var letterOfAuthority = ( './core/letterOfAuthority.js' );
-var localPeeringGateway = ( './core/localPeeringGateway.js' );
-var peerRegionForRemorePeering = ( './core/peerRegionForRemorePeering.js' );
-var privateIp = ( './core/privateIp.js' );
+var crossConnect = require( './core/crossConnect.js' );
+var crossConnectGroup = require( './core/crossConnectGroup.js' );
+var crossConnectLocation = require( './core/crossConnectLocation.js' );
+var crossConnectPortSpeedShape = require( './core/crossConnectPortSpeedShape.js' );
+var crossConnectStatus = require( './core/crossConnectStatus.js' );
+var dhcpOptions = require( './core/dhcpOptions.js' );
+var drg = require( './core/drg.js' );
+var drgAttachment = require( './core/drgAttachment.js' );
+var fastConnectProviderServices = require( './core/fastConnectProviderServices.js' );
+var image = require( './core/image.js' );
+var instance = require( './core/instance.js' );
+var instanceConsoleConnection = require( './core/instanceConsoleConnection.js' );
+var instanceCredential = require( './core/instanceCredential.js' );
+var internetGateway = require( './core/internetGateway.js' );
+var ipSecConnection = require( './core/ipSecConnection.js' );
+var ipSecConnectionDeviceConfig = require( './core/ipSecConnectionDeviceConfig.js' );
+var ipSecConnectionDeviceStatus = require( './core/ipSecConnectionDeviceStatus.js' );
+var letterOfAuthority = require( './core/letterOfAuthority.js' );
+var localPeeringGateway = require( './core/localPeeringGateway.js' );
+var peerRegionForRemotePeering = require( './core/peerRegionForRemotePeering.js' );
+var privateIp = require( './core/privateIp.js' );
 var publicIp = require( './core/publicIp.js' );
 var remotePeeringConnection = require( './core/remotePeeringConnection.js' );
 var routeTable = require( './core/routeTable.js' );
@@ -37,6 +37,13 @@ var virtualCircuitBandwidthShape = require( './core/virtualCircuitBandwidthShape
 var virtualCircuitPublicPrefix = require( './core/virtualCircuitPublicPrefix.js' );
 var vnic = require( './core/vnic.js' );
 var vnicAttachment = require( './core/vnicAttachment.js' );
+var volume = require( './core/volume.js' );
+var volumeAttachment = require( './core/volumeAttachment.js' );
+var volumeBackup = require( './core/volumeBackup.js' );
+var volumeBackupPolicy = require( './core/volumeBackupPolicy.js' );
+var volumeBackupPolicyAssignment = require( './core/volumeBackupPolicyAssignment.js' );
+var volumeGroup = require( './core/volumeGroup.js' );
+var volumeGroupBackup = require( './core/volumeGroupBackup.js' );
 
 module.exports = {
     bootVolume: bootVolume,
@@ -62,7 +69,7 @@ module.exports = {
     ipSecConnectionDeviceStatus: ipSecConnectionDeviceStatus,
     letterOfAuthority: letterOfAuthority,
     localPeeringGateway: localPeeringGateway,
-    peerRegionForRemorePeering: peerRegionForRemorePeering,
+    peerRegionForRemotePeering: peerRegionForRemotePeering,
     privateIp: privateIp,
     publicIp: publicIp,
     remotePeeringConnection: remotePeeringConnection,
@@ -77,5 +84,12 @@ module.exports = {
     virtualCircuitBandwidthShape: virtualCircuitBandwidthShape,
     virtualCircuitPublicPrefix: virtualCircuitPublicPrefix,
     vnic: vnic,
-    vnicAttachment: vnicAttachment
+    vnicAttachment: vnicAttachment,
+    volume: volume,
+    volumeAttachment: volumeAttachment,
+    volumeBackup: volumeBackup,
+    volumeBackupPolicy: volumeBackupPolicy,
+    volumeBackupPolicyAssignment: volumeBackupPolicyAssignment,
+    volumeGroup: volumeGroup,
+    volumeGroupBackup: volumeGroupBackup
 }

@@ -45,5 +45,5 @@ function listVirtualCircuitBandwidthShapes( auth, parameters, callback ) {
   module.exports={
       list: list,
       listVirtualCircuitBandwidthShapes: listVirtualCircuitBandwidthShapes,
-      get: get
+      create: create
   }

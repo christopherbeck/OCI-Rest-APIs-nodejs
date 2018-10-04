@@ -9,6 +9,7 @@ var auth={
     keyFingerprint : 'd0:77:11:66:7b:a8:90:c0:ef:c7:5c:79:9d:c6:f4:24',
     RESTversion : '/20160918',
     //RESTversion : '/20180115',
+    //RESTversion: '/20171215',
     region: 'us-ashburn-1',
     privateKeyPath: '/Users/clbeck/.oci/oci_api_key.pem'
 };
@@ -48,6 +49,7 @@ parameters = {
 
 parameters = {
     compartmentId : 'ocid1.tenancy.oc1..aaaaaaaahm47pxqwunxjqel6jhiuyodldss4z2tx4m24cfmyqys3zndfw3ta',
+    availabilityDomain: 'KgCo:US-ASHBURN-AD-1',
     //compartmentId : 'ocid1.compartment.oc1..aaaaaaaablk3uqbct3uvkzz4stugovjelbt4mkmt3oth2e6ebcxwub6jmtzq',
     vncId: 'ocid1.vcn.oc1.iad.aaaaaaaanoct32jijolnwc7vzwwgnwvsdtwdqjwlgzvlfx4o6as2v4unam7q',
     namespaceName : 'oraclecloud431'
@@ -80,4 +82,7 @@ console.log( query );
 //oci.core.subnet.list( auth, parameters, function(data){console.log(data);} );
 //oci.core.vcn.list( auth, parameters, function(data){console.log(data);} );
 oci.database.autonomousDatabase.list( auth, parameters, function(data){console.log(data);} );
-oci.iam.user.list( auth, parameters, function(data){console.log(data);} );
+//oci.iam.user.list( auth, parameters, function(data){console.log(data);} );
+
+auth.RESTversion = '/20171215';
+oci.fileStorage.fileSystemSummary.list( auth, parameters, function(data){console.log(data);} );

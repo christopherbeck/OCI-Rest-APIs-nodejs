@@ -2,12 +2,15 @@ var https = require('https');
 var httpSignature = require('http-signature');
 var jsSHA = require('jssha');
 
-function process( auth, options, callback ) {
+function process( auth, options, callback) {
   // begin https request
   var request = https.request( options, handleResponse(callback));
 
   // set headers
+  
   request.setHeader( 'Content-Type', 'application/json' );
+  if (options.uploadFile )
+    request.setHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
   if ( options['opc-request-id'] !== undefined )
     request.setHeader( 'opc-request-token', options['opc-request-token'] );
   if ( options['opc-client-request-id'] !== undefined )
@@ -26,29 +29,30 @@ function process( auth, options, callback ) {
     request.setHeader( 'range', options.range );
 
   // sign/authorize the https request for REST call
-  var body = JSON.stringify( options.body );
-  sign( auth, request, body );
+  if (options.uploadFile)
+    var body = options.body;
+  else
+    var body = JSON.stringify( options.body );
+  sign( auth, request, body, options.uploadFile );
   request.end(body);
 }
 
-function sign( auth, request, body ) {
+function sign( auth, request, body, uploadFile) {
   var headersToSign = [ "host",  "date",  "(request-target)" ];
   var methodsThatRequireExtraHeaders = ["POST", "PUT"];
 
-  if(methodsThatRequireExtraHeaders.indexOf(request.method.toUpperCase()) !== -1) 
+  if(methodsThatRequireExtraHeaders.indexOf(request.method.toUpperCase()) !== -1 ) 
   {
     body = body || ""; 
-    var shaObj = new jsSHA("SHA-256", "TEXT");
-    shaObj.update(body);
-
     request.setHeader("Content-Length", body.length);
-    request.setHeader("x-content-sha256", shaObj.getHash('B64'));
+    headersToSign = headersToSign.concat([ "content-type", "content-length" ]);
 
-    headersToSign = headersToSign.concat([
-      "content-type",
-      "content-length",
-      "x-content-sha256"
-    ]);
+    if ( !uploadFile ){
+      var shaObj = new jsSHA("SHA-256", "TEXT");
+      shaObj.update(body);
+      request.setHeader("x-content-sha256", shaObj.getHash('B64'));
+      headersToSign = headersToSign.concat([ "x-content-sha256" ]);
+    }
   }
 
   httpSignature.sign(
@@ -68,12 +72,12 @@ function sign( auth, request, body ) {
 function handleResponse( callback ) {
   return function(response) {
     var responseBody = "";
-    response.on('data', function(chunk) {
-      responseBody += chunk;
-    });
-    response.on('end', function() {
-      callback(JSON.parse(responseBody));
-    });
+    response.on('data', function(chunk) { responseBody += chunk; });
+    response.on('end', function() { if (responseBody!="")
+                                      callback(JSON.parse(responseBody));
+                                    else
+                                      callback(response.headers /*responseBody*/);
+                                  });
   }
 };
 

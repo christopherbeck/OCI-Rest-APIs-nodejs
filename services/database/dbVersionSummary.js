@@ -3,6 +3,7 @@ var endpoint = require('../../configs/endpoints.js');
 
 function list( auth, parameters, callback ) {
     var query = '';
+    query = query + '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
     if( 'limit' in parameters )
       query = query + '&limit=' + encodeURIComponent(parameters.limit);
     if( 'page' in parameters )
@@ -13,9 +14,7 @@ function list( auth, parameters, callback ) {
       query = query + '&dbSystemId=' + encodeURIComponent(parameters.dbSystemId);
     
     ocirest.process( auth,
-                     { path : auth.RESTversion + '/dbVersions' + 
-                              '&compartmentId=' + encodeURIComponent(parameters.compartmentId) +
-                              query,
+                     { path : auth.RESTversion + '/dbVersions' + query,
                        host : endpoint.service.database[auth.region],
                        method : 'GET' },
                      callback );

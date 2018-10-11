@@ -1,6 +1,4 @@
-var os = require( 'os' );
 var fs = require( 'fs' );
-
 var oci = require( './oci' );
 
 var auth={
@@ -81,8 +79,102 @@ console.log( query );
 //oci.core.shape.list( auth, parameters, function(data){console.log(data);} );
 //oci.core.subnet.list( auth, parameters, function(data){console.log(data);} );
 //oci.core.vcn.list( auth, parameters, function(data){console.log(data);} );
-oci.database.autonomousDatabase.list( auth, parameters, function(data){console.log(data);} );
 //oci.iam.user.list( auth, parameters, function(data){console.log(data);} );
 
-auth.RESTversion = '/20171215';
-oci.fileStorage.fileSystemSummary.list( auth, parameters, function(data){console.log(data);} );
+//auth.RESTversion = '/20171215';
+//oci.fileStorage.fileSystemSummary.list( auth, parameters, function(data){console.log(data);} );
+
+//auth.RESTversion = '/20160918';
+//oci.database.autonomousDatabase.list( auth, parameters, function(data){console.log(data);} );
+
+parameters.fileName = "/Users/clbeck/a";
+parameters.fileName = "/Users/clbeck/Documents/Autonomous Data Warehouse Blog.docx";
+parameters.fileName = "/Users/clbeck/Desktop/94927a.jpg";
+//parameters.fileName = "/Users/clbeck/Desktop/phani.txt";
+parameters.objectName = 'phani.jpg';
+parameters.namespaceName = 'oraclecloud987';
+parameters.bucketName = 'pebbles';
+parameters.body = { object : 'phani.jpg' };
+//oci.objectStore.obj.createMultipartUpload( auth, parameters, function(data){console.log(data);})
+//oci.objectStore.obj.put( auth, parameters, function(data){console.log(data);}  );
+/*
+var uploadId;
+var cont = false;
+var readChunk = require('read-chunk');
+
+oci.objectStore.obj.createMultipartUpload( auth, parameters, 
+  function(data){
+    uploadId = data.uploadId;
+    cont = true;
+  });
+require( 'deasync' ).loopWhile(function(){return !cont;});
+parameters.uploadId = uploadId;
+
+var fs = require( 'fs' );
+var bytes = fs.statSync(parameters.fileName)["size"];
+var chunkSize = 1024;
+var chunks = Math.trunc(bytes/chunkSize) + 1;
+var parts = 0;
+for( var i=0; i<chunks; i++ )
+{
+
+ buffer = readChunk.sync( parameters.fileName, i*chunkSize, chunkSize );
+ parameters.body = buffer;
+ parameters.uploadPartNum = i+1;
+ oci.objectStore.obj.uploadPart( auth, parameters, function(data){
+   console.log( JSON.stringify( 'etag >>>> ' + data.etag ));
+   parts = parts + 1;
+   });
+}
+require( 'deasync' ).loopWhile(function(){return parts != chunks;})
+
+var commitBody = {"partsToCommit" : [] };
+cont = false;
+parameters.body = '';
+oci.objectStore.obj.listMultipartUploadParts( auth, parameters, function(data){
+  for( var i=0; i<data.length; i++ ){
+    commitBody.partsToCommit.push( {'partNum': data[i].partNumber, 'etag': data[i].etag });
+    cont = i == chunks-1;
+  }
+});
+require( 'deasync' ).loopWhile(function(){return !cont;})
+
+console.log(commitBody);
+
+parameters.body = commitBody;
+oci.objectStore.obj.commitMultipartUpload( auth, parameters, function(data){ console.log(data);} );
+
+/*
+    var chunk;
+    var chunkSize = 10;
+    for( var i=0; i< 10; i++){
+    var readStream = fs.createReadStream(parameters.fileName, {start: i*chunkSize, end:(i*chunkSize) + (chunkSize-1)});
+    readStream
+      .on('readable', function(){
+        while(null !== (chunk = readStream.read()))
+          console.log(chunk);
+      })
+      .on('end', function(){
+        console.log(chunk);
+      })
+    }
+
+    */
+
+oci.objectStore.obj.listMultipart( auth, parameters, function(data){
+  d = data;
+  console.log(data);
+  for( var i=0; i<data.length; i++ ){
+    parameters.uploadId = data[i].uploadId;
+    parameters.objectName = data[i].object;
+    oci.objectStore.obj.abortMultipart( auth, parameters, function(d){console.log(d);} );
+  }
+});
+
+/*
+auth.compartmentId = 'ocid1.compartment.oc1..aaaaaaaaoii6dck3vphxejxnu66gxrlxvi4yv2igdnuss5la2myxojilpuaa';
+auth.RESTversion = '/20160918';
+auth.limit = 100;
+oci.database.dbVersionSummary.list( auth, parameters, function(data){console.log(data);});
+*/
+

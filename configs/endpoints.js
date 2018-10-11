@@ -1,5 +1,9 @@
 var service = 
   {
+    kms : { 'us-phoenix-1' : 'kms.us-phoenix-1.oraclecloud.com',
+              'us-ashburn-1' : 'kms.us-ashburn-1.oraclecloud.com',
+              'eu-frankfurt-1' : 'kms.eu-frankfurt-1.oraclecloud.com',
+              'uk-london-1' : 'kms.uk-london-1.oraclecloud.com' } ,
     audit : { 'us-phoenix-1' : 'audit.us-phoenix-1.oraclecloud.com',
               'us-ashburn-1' : 'audit.us-ashburn-1.oraclecloud.com',
               'eu-frankfurt-1' : 'audit.eu-frankfurt-1.oraclecloud.com',

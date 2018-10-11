@@ -39,9 +39,9 @@ function process( auth, options, callback) {
 
 function sign( auth, request, body, uploadFile) {
   var headersToSign = [ "host",  "date",  "(request-target)" ];
-  var methodsThatRequireExtraHeaders = ["POST", "PUT"];
 
-  if(methodsThatRequireExtraHeaders.indexOf(request.method.toUpperCase()) !== -1 ) 
+  // methodsThatRequireExtraHeaders ["POST", "PUT"];
+  if(["POST","PUT"].indexOf(request.method.toUpperCase()) !== -1 ) 
   {
     body = body || ""; 
     request.setHeader("Content-Length", body.length);
@@ -55,17 +55,14 @@ function sign( auth, request, body, uploadFile) {
     }
   }
 
-  httpSignature.sign(
-    request, 
-    { key: auth.privateKey,
-      keyId: auth.tenancyId + "/" + auth.userId + "/" + auth.keyFingerprint,
-      headers: headersToSign }
-  );
+  httpSignature.sign( request, { key: auth.privateKey,
+                                 keyId: auth.tenancyId + "/" + 
+                                        auth.userId + "/" + 
+                                        auth.keyFingerprint,
+                                 headers: headersToSign } );
 
-  var newAuthHeaderValue = 
-    request.getHeader("Authorization").replace("Signature ", "Signature version=\"1\",");
+  var newAuthHeaderValue = request.getHeader("Authorization").replace("Signature ", "Signature version=\"1\",");
   request.setHeader("Authorization", newAuthHeaderValue);
-
 };
 
 // generates a function to handle the https.request response object

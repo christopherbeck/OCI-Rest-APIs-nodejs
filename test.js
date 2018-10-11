@@ -27,7 +27,7 @@ var parameters = {
 }
 //oci.database.autonomousDatabase.update( auth, parameters, function(data){console.log(data);} );
 //oci.database.autonomousDatabaseBackup.list( auth, {"compartmentId": compOCID }, function(data){console.log(data);} );
-//oci.objectStore.bucket.list(auth, 'oraclecloud431', {compartmentId: compOCID }, function(data){console.log(data);} );
+//`oci.objectStore.bucket.list(auth, 'oraclecloud431', {compartmentId: compOCID }, function(data){console.log(data);} );
 //oci.objectStore.bucket.get(auth, 'oraclecloud431', 'calvin_bucket', function(data){console.log(data);} );
 
 //oci.objectStore.namespace.getMetadata( auth, 'oraclecloud431', function(data){console.log(data);} )
@@ -38,13 +38,22 @@ compOCID = 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqw
 //oci.database.autonomousDatabase.list( auth, { compartmentId: compOCID}, function(data){console.log(data);} );
 
 parameters = {
-  namespaceName: 'oraclecloud431',
-  bucketName: 'calvin_bucket',
-  body : { sourceName: 'part1.csv', newName: "part1_new.csv" }
+  namespaceName: 'oraclecloud987',
+  bucketName: 'pebbles',
+  body : { sourceName: 'tejis.jpg', newName: "tejus.jpg" },
+  compartmentId : '',
+  dbSystemShape : 'VM.Standard1.1'
 };
 
 //oci.objectStore.obj.rename( auth, parameters, function(data){console.log(data);} );
 
+//oci.database.dbVersionSummary.list( auth, parameters, function(data){console.log(data);}  );
+
+auth.RESTversion = '/20180409';
+oci.search.resourceType.list( auth, parameters, function(data){console.log(JSON.stringify(data[0]));}  );
+
+
+/*
 parameters = {
     compartmentId : 'ocid1.tenancy.oc1..aaaaaaaahm47pxqwunxjqel6jhiuyodldss4z2tx4m24cfmyqys3zndfw3ta',
     availabilityDomain: 'KgCo:US-ASHBURN-AD-1',
@@ -160,7 +169,7 @@ oci.objectStore.obj.commitMultipartUpload( auth, parameters, function(data){ con
     }
 
     */
-
+/*
 oci.objectStore.obj.listMultipart( auth, parameters, function(data){
   d = data;
   console.log(data);
@@ -170,11 +179,10 @@ oci.objectStore.obj.listMultipart( auth, parameters, function(data){
     oci.objectStore.obj.abortMultipart( auth, parameters, function(d){console.log(d);} );
   }
 });
-
+*/
 /*
 auth.compartmentId = 'ocid1.compartment.oc1..aaaaaaaaoii6dck3vphxejxnu66gxrlxvi4yv2igdnuss5la2myxojilpuaa';
 auth.RESTversion = '/20160918';
 auth.limit = 100;
 oci.database.dbVersionSummary.list( auth, parameters, function(data){console.log(data);});
 */
-

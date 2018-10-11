@@ -37,23 +37,13 @@ function get( auth, parameters, callback ){
 
 function list( auth, parameters, callback ){
     var query = '';
-    var queryParameterExists = false;
-    if( 'objectNamePrefix' in parameters ){
-      query = query + (queryParameterExists?'&':'?') +
-              'objectNamePrefix=' + encodeURIComponent(parameters.objectNamePrefix);
-      queryParameterExists = true;
-    }
-    if( 'limit' in parameters ){
-      query = query + (queryParameterExists?'&':'?') +
-              'limit=' + encodeURIComponent(parameters.limit);
-      queryParameterExists = true;
-    }
-    if( 'page' in parameters ){
-      query = query + (queryParameterExists?'&':'?') +
-              'page=' + encodeURIComponent(parameters.page);
-      queryParameterExists = true;
-    }
-    console.log( 'query = ' + query );
+    if( 'objectNamePrefix' in parameters )
+      query = '?objectNamePrefix=' + encodeURIComponent(parameters.objectNamePrefix);
+    if( 'limit' in parameters )
+      query += (query==''?'&':'?') + 'limit=' + encodeURIComponent(parameters.limit);
+    if( 'page' in parameters )
+      query += (query==''?'&':'?') + 'page=' + encodeURIComponent(parameters.page);
+      
     ocirest.process( auth,
                      { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
                               '/b/' + encodeURIComponent(parameters.bucketName) +
@@ -63,7 +53,6 @@ function list( auth, parameters, callback ){
                        method : 'GET' },
                      callback );
   }
-
 
 module.exports = {
   create : create,

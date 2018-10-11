@@ -8,7 +8,7 @@ function create( auth, parameters, callback ){
                      host : endpoint.service.objectStore[auth.region],
                      method : 'POST',
                      'opc-client-response' : parameters['opc-client-response'],
-                     body : options }, 
+                     body : parameters.body }, 
                    callback );
 }
 
@@ -20,7 +20,7 @@ function update( auth, parameters, callback ) {
                      method : 'POST',
                      'opc-client-request-id' : parameters['opc-client-request-id'],
                      'if-match' : parameters['if-match'],
-                     body : options },
+                     body : parameters.body },
                    callback );
 };
 

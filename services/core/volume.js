@@ -6,7 +6,7 @@ function create( auth, parameters, callback ){
                    { path : auth.RESTversion + '/volumes',
                      host : endpoint.service.core[auth.region],
                      method : 'POST',
-                     'opc-client-response' : parameters['opc-client-response'],
+                     'opc-retry-token' : parameters['opc-retry-token'],
                      body : options }, 
                    callback );
 }

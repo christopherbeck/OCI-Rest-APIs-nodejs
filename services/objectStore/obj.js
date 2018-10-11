@@ -5,17 +5,17 @@ var endpoint = require('../../configs/endpoints.js');
 function list( auth, parameters, callback ){
   var query = '';
   if ( 'prefix' in parameters )
-    query = query + (query==''?'?':'&') + 'prefix=' + encodeURIComponent(parameters.prefix);
+    query += (query==''?'?':'&') + 'prefix=' + encodeURIComponent(parameters.prefix);
   if ( 'start' in parameters )
-    query = query + (query==''?'?':'&') + 'start=' + encodeURIComponent(parameters.start);
+    query += (query==''?'?':'&') + 'start=' + encodeURIComponent(parameters.start);
   if ( 'end' in parameters )
-    query = query + (query==''?'?':'&') + 'end=' + encodeURIComponent(parameters.end);
+    query += (query==''?'?':'&') + 'end=' + encodeURIComponent(parameters.end);
   if ( 'limit' in parameters )
-    query = query + (query==''?'?':'&') + 'limit=' + encodeURIComponent(parameters.limit);
+    query += (query==''?'?':'&') + 'limit=' + encodeURIComponent(parameters.limit);
   if ( 'delimiter' in parameters )
-    query = query + (query==''?'?':'&') + 'delimiter=' + encodeURIComponent(parameters.delimiter);
+    query += (query==''?'?':'&') + 'delimiter=' + encodeURIComponent(parameters.delimiter);
   if ( 'fields' in parameters )
-    query = query + (query==''?'?':'&') + 'fields=' + encodeURIComponent(parameters.fields);
+    query += (query==''?'?':'&') + 'fields=' + encodeURIComponent(parameters.fields);
 
   ocirest.process( auth,
                    { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
@@ -31,9 +31,9 @@ function list( auth, parameters, callback ){
 function listMultipart( auth, parameters, callback ){
   var query = '';
   if ( 'limit' in parameters )
-    query = query + (query==''?'?':'&') + 'limit=' + encodeURIComponent(parameters.limit);
+    query += (query==''?'?':'&') + 'limit=' + encodeURIComponent(parameters.limit);
   if ( 'page' in parameters )
-    query = query + (query==''?'?':'&') + 'page=' + encodeURIComponent(parameters.page);
+    query += (query==''?'?':'&') + 'page=' + encodeURIComponent(parameters.page);
 
   ocirest.process( auth,
                    { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
@@ -48,7 +48,7 @@ function listMultipart( auth, parameters, callback ){
 
 function abortMultipart( auth, parameters, callback ){
   var query = '';
-  query = query + '?uploadId=' + encodeURIComponent(parameters.uploadId);
+  query += '?uploadId=' + encodeURIComponent(parameters.uploadId);
   ocirest.process( auth,
                    { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
                             '/b/' + encodeURIComponent(parameters.bucketName) + 
@@ -144,8 +144,8 @@ function createMultipartUpload( auth, parameters, callback )
 function uploadPart( auth, parameters, callback )
 {
   var query = '';
-  query = query + '?uploadId=' + encodeURIComponent(parameters.uploadId);
-  query = query + '&uploadPartNum=' + encodeURIComponent(parameters.uploadPartNum);
+  query += '?uploadId=' + encodeURIComponent(parameters.uploadId);
+  query += '&uploadPartNum=' + encodeURIComponent(parameters.uploadPartNum);
   ocirest.process( auth,
     { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
              '/b/' + encodeURIComponent(parameters.bucketName) + 
@@ -164,11 +164,11 @@ function uploadPart( auth, parameters, callback )
 
 function listMultipartUploadParts( auth, parameters, callback ){
   var query = '';
-  query = query + '?uploadId=' + encodeURIComponent(parameters.uploadId);
+  query += '?uploadId=' + encodeURIComponent(parameters.uploadId);
   if ( 'limit' in parameters )
-    query = query + (query==''?'?':'&') + 'limit=' + encodeURIComponent(parameters.limit);
+    query += (query==''?'?':'&') + 'limit=' + encodeURIComponent(parameters.limit);
   if ( 'page' in parameters )
-    query = query + (query==''?'?':'&') + 'page=' + encodeURIComponent(parameters.page);
+    query += (query==''?'?':'&') + 'page=' + encodeURIComponent(parameters.page);
   ocirest.process( auth,
                    { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
                             '/b/' + encodeURIComponent(parameters.bucketName) + 
@@ -182,7 +182,7 @@ function listMultipartUploadParts( auth, parameters, callback ){
 
 function commitMultipartUpload( auth, parameters, callback ){
   var query = '';
-  query = query + '?uploadId=' + encodeURIComponent(parameters.uploadId);
+  query += '?uploadId=' + encodeURIComponent(parameters.uploadId);
    ocirest.process( auth,
      { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
               '/b/' + encodeURIComponent(parameters.bucketName) + 

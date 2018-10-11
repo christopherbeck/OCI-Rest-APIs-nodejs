@@ -44,14 +44,14 @@ function get( auth, parameters, callback ) {
 
 function list( auth, parameters, callback ) {
   var query = '';
-  query = query + '?availabilityDomain=' + encodeURIComponent(parameters.availabilityDomain);
-  query = query + '&compartmentId=' + encodeURIComponent(parameters.compartmentId);
+  query += '?availabilityDomain=' + encodeURIComponent(parameters.availabilityDomain);
+  query += '&compartmentId=' + encodeURIComponent(parameters.compartmentId);
   if ( parameters.limit !== undefined )
-    query = query + '&limit=' + encodeURIComponent(parameters.limit);
+    query += '&limit=' + encodeURIComponent(parameters.limit);
   if ( parameters.page !== undefined )
-    query = query + '&page=' + encodeURIComponent(parameters.page);
+    query += '&page=' + encodeURIComponent(parameters.page);
   if ( parameters.volumeGroupId !== undefined )
-    query = query + '&volumeGroupId=' + encodeURIComponent(parameters.volumeGroupId);
+    query += '&volumeGroupId=' + encodeURIComponent(parameters.volumeGroupId);
 
   ocirest.process( auth, 
                    { path : auth.RESTversion + '/bootVolumes' + query,

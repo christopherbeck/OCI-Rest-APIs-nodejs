@@ -10,6 +10,7 @@ var internetIntel = require( './services/internetIntel.js' );
 var kms = require( './services/kms.js' );
 var loadBalance = require( './services/loadBalance.js' );
 var search = require( './services/search.js' );
+var containerEngine = require( './services/containerEngine.js' );
 
 module.exports = {
     database: database,
@@ -23,5 +24,6 @@ module.exports = {
     internetIntel: internetIntel,
     kms: kms,
     loadBalance: loadBalance,
-    search: search
+    search: search,
+    containerEngine: containerEngine
 }

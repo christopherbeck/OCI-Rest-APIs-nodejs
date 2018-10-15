@@ -1,4 +1,4 @@
-var ocirest = require('../../utilsx/ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function action( auth, parameters, callback ) {

@@ -1,60 +1,55 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 
 function update( auth, parameters, callback ) {
-  var query = '';
-  if ( 'compartmentId' in parameters )
-    query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId );
+  var possibleHeaders = ['if-match','if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + 
                             '/zones/' + encodeURIComponent(parameters.zoneNameOrId) +
                             '/records/' + encodeURIComponent(parameters.domain) +
                             '/' + encodeURIComponent(parameters.rtype) +
-                            query,
+                            queryString,
                      host : endpoint.service.dns[auth.region],
                      method : 'PUT',
-                     'If-Match' : parameters['If-Match'],
-                     'If-Unmodified-Since' : parameters['If-Unmodified-Since'],
+                     headers : headers,
                      body : parameters.body },
                    callback );
 };
 
 function get( auth, parameters, callback ) {
-  var query = '';
-  if ( 'limit' in parameters )
-    query = query + (query==''?'?':'&') + 'limit=' + encodeURIComponent( parameters.limit );
-  if ( 'page' in parameters )
-    query = query + (query==''?'?':'&') + 'page=' + encodeURIComponent( parameters.page );
-  if ( 'zoneVersion' in parameters )
-    query = query + (query==''?'?':'&') + 'zoneVersion=' + encodeURIComponent( parameters.zoneVersion );
-  if ( 'compartmentId' in parameters )
-    query = query + (query==''?'?':'&') + 'compartmentId=' + encodeURIComponent( parameters.compartmentId );
+  var possibleHeaders = ['if-none-match','if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId','limit','page','zoneVersion'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + 
                             '/zones/' + encodeURIComponent(parameters.zoneNameOrId) +
                             '/records/' + encodeURIComponent(parameters.domain) +
                             '/' + encodeURIComponent(parameters.rtype) +
-                            query,
+                            queryString,
                      host : endpoint.service.dns[auth.region],
-                     'If-Match' : parameters['If-Match'],
-                     'If-Unmodified-Since' : parameters['If-Unmodified-Since'],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };
 
 function patch( auth, parameters, callback ) {
-  var query = '';
-  if ( 'compartmentId' in parameters )
-    query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId );
+  var possibleHeaders = ['if-match','if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + 
                             '/zones/' + encodeURIComponent(parameters.zoneNameOrId) +
                             '/records/' + encodeURIComponent(parameters.domain) +
-                            '/' + encodeURIComponent(parameters.rtype) + query,
+                            '/' + encodeURIComponent(parameters.rtype) + 
+                            queryString,
                      host : endpoint.service.dns[auth.region],
-                     'If-Match' : parameters['If-Match'],
-                     'If-Unmodified-Since' : parameters['If-Unmodified-Since'],
+                     headers : headers,
                      body: parameters.body,
                      method : 'PATCH' },
                     callback );
@@ -62,18 +57,18 @@ function patch( auth, parameters, callback ) {
 
 
 function drop( auth, parameters, callback ) {
-  var query = '';
-  if ( 'compartmentId' in parameters )
-    query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId );
+  var possibleHeaders = ['if-match','if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + 
                             '/zones/' + encodeURIComponent(parameters.zoneNameOrId) +
                             '/records/' + encodeURIComponent(parameters.domain) +
                             '/' + encodeURIComponent(parameters.rtype) +
-                            query,
+                            queryString,
                      host : endpoint.service.dns[auth.region],
-                     'If-Match' : parameters['If-Match'],
-                     'If-Unmodified-Since' : parameters['If-Unmodified-Since'],
+                     headers : headers,
                      method : 'DELETE' },
                     callback );
 };

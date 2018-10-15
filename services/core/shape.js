@@ -1,21 +1,15 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function list( auth, parameters, callback ) {
-    var query = '';
-    query = query + '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
-    if ( 'page' in parameters )
-      query = query + '&page=' + encodeURIComponent(parameters.page);
-    if ( 'limit' in parameters )
-      query = query + '&limit=' + encodeURIComponent(parameters.limit);
-    if ( 'availabilityDomain' in parameters )
-      query = query + '&availabilityDomain=' + encodeURIComponent(parameters.availabilityDomain);
-    if ( 'imageId' in parameters )
-      query = query + '&imageId=' + encodeURIComponent(parameters.imageId);
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['compartmentId', 'availabilityDomain', 'limit', 'page', 'imageId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
     ocirest.process( auth, 
-                     { path : auth.RESTversion + 
-                      '/shapes' + query,
+                     { path : auth.RESTversion + '/shapes' + queryString,
                        host : endpoint.service.core[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };

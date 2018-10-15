@@ -1,16 +1,15 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function listMarkets( auth, parameters, callback ){
-    var query = '';
-    if( 'limit' in parameters )
-      query += (query==''?'&':'?') + 'limit=' + encodeURIComponent(parameters.limit);
-    if( 'page' in parameters )
-      query += (query==''?'&':'?') + 'page=' + encodeURIComponent(parameters.page);
-      
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['limit', 'page'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
     ocirest.process( auth,
-                     { path : auth.RESTVersion + '/marketPerformance/markets',
+                     { path : auth.RESTVersion + '/marketPerformance/markets' + queryString,
                        host : endpoint.service.internetIntel[auth.region],
+                       headers : headers,
                        method : 'GET' },
                      callback );
   }

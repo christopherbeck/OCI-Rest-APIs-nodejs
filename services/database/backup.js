@@ -1,64 +1,53 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function create( auth, parameters, callback ) {
+  var possibleHeaders = ['opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + '/backups' ,
                        host : endpoint.service.database[auth.region],
                        method : 'POST',
-                       'opc-retry-token' : parameters['opc-retry-token'],
+                       headers: headers,
                        body : parameters.body },
                      callback );
   };
 
 function drop( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + '/backups/'  +
                               encodeURIComponent(parameters.backupId),
                        host : endpoint.service.database[auth.region],
                        method : 'DELETE',
-                       'if-match' : parameters['if-match'] },
+                       headers: headers },
                      callback );
   };
 
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + '/backups/'  +
                               encodeURIComponent(parameters.backupId),
                        host : endpoint.service.database[auth.region],
+                       headers : headers,
                        method : 'GET' },
                      callback );
   };
 
 function list( auth, parameters, callback ) {
-    var query = '';
-    var queryParameterExists = false;
-    if( 'databaseId' in parameters ){
-      query = query + (queryParameterExists?'&':'/?') +
-              'databaseId=' + encodeURIComponent(parameters.datbaseId);
-      queryParameterExists = true;
-    }
-    if( 'compartmentId' in parameters ){
-      query = query + (queryParameterExists?'&':'/?') +
-              'compartmentId=' + encodeURIComponent(parameters.compartmentId);
-      queryParameterExists = true;
-    }
-    if( 'limit' in parameters ){
-      query = query + (queryParameterExists?'&':'/?') +
-              'limit=' + encodeURIComponent(parameters.limit);
-      queryParameterExists = true;
-    }
-    if( 'page' in parameters ){
-      query = query + (queryParameterExists?'&':'/?') +
-              'page=' + encodeURIComponent(parameters.page);
-      queryParameterExists = true;
-    }
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['databaseId', 'compartmentId', 'limit', 'page' ];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
     ocirest.process( auth,
-                     { path : auth.RESTversion + '/backups' + query,
+                     { path : auth.RESTversion + '/backups' + queryString,
                        host : endpoint.service.database[auth.region],
                        method : 'POST',
-                       'opc-retry-token' : parameters['opc-retry-token'],
+                       headers : headers,
                        body : parameters.body },
                      callback );
   };

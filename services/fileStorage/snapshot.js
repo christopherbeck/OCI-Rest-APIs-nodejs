@@ -1,39 +1,48 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function create( auth, parameters, callback ){
+  var possibleHeaders = ['opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/snapshots',
                      host : endpoint.service.fileStorage[auth.region],
                      method : 'POST',
-                     'opc-client-response' : parameters['opc-client-response'],
+                     headers : headers,
                      body : parameters.body }, 
                    callback );
 }
 
 function update( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/snapshots/' + encodeURIComponent(parameters.snapshotId),
                      host : endpoint.service.fileStorage[auth.region],
                      method : 'PUT',
-                     'if-match' : parameters['if-match'],
+                     headers : headers,
                      body : parameters.body },
                    callback );
 };
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = [];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/snapshots/' + encodeURIComponent(parameters.snapshotId),
                      host : endpoint.service.fileStorage[auth.region],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };
 
 function drop( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/snapshots/' + encodeURIComponent(parameters.snapshotId),
                      host : endpoint.service.fileStorage[auth.region],
-                     'if-match' : parameters['if-match'],
+                     headers : headers,
                      method : 'DELETE' },
                     callback );
 };

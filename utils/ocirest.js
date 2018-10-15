@@ -3,40 +3,22 @@ var httpSignature = require('http-signature');
 var jsSHA = require('jssha');
 
 function process( auth, options, callback) {
+
+  // process request body
+  var body;
+  if (options.headers['content-type'] == 'x-www-form-urlencoded' )
+    body = options.body;
+  else
+    body = JSON.stringify( options.body );
+  delete options.body;
+
   // begin https request
   var request = https.request( options, handleResponse(callback));
-/*
-  // set headers
-  for ( var i=0; i<options.headers; i++ )
-    request.setHeader( opti)
-  request.setHeader( 'Content-Type', 'application/json' );
-  if (options.uploadFile )
-    request.setHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
-  if ( options['opc-request-id'] !== undefined )
-    request.setHeader( 'opc-request-token', options['opc-request-token'] );
-  if ( options['opc-client-request-id'] !== undefined )
-    request.setHeader( 'opc-client-request-token', options['opc-client-request-token'] );
-  if ( options['opc-retry-token'] !== undefined )
-    request.setHeader( 'opc-retry-token', options['opc-retry-token'] );
-  if ( options['if-match'] !== undefined )
-    request.setHeader( 'if-match', options['if-match'] );
-  if ( options['If-Match'] !== undefined )
-    request.setHeader( 'If-Match', options['If-Match'] );
-  if ( options['If-Unmodified-Since'] !== undefined )
-    request.setHeader( 'If-Unmodified-Since', options['If-Unmodified-Since'] );
-  if ( options['if-none-match'] !== undefined )
-    request.setHeader( 'if-none-match', options['if-none-match'] );
-  if ( options.range !== undefined )
-    request.setHeader( 'range', options.range );
 
-    */
+  // sing the headers
+  sign( auth, request, body );
 
-  // sign/authorize the https request for REST call
-  if (options.headers['content-type'] == 'x-www-form-urlencoded' )
-    var body = options.body;
-  else
-    var body = JSON.stringify( options.body );
-  sign( auth, request, body, options.uploadFile );
+  // send the body and process the response
   request.end(body);
 }
 
@@ -81,6 +63,27 @@ function handleResponse( callback ) {
   }
 };
 
+
+function buildHeaders( possibleHeaders, options, bString ){
+  var headers = {};
+  headers['content-type'] = bString ? 'application/x-www-form-urlencoded' : 'application/json';
+
+  for( var i=0; i<possibleHeaders.length; i++ )
+      if ( possibleHeaders[i].toLowerCase() in options )
+        headers[possibleHeaders[i].toLowerCase()] = options[possibleHeaders[i]];
+  return headers;
+}
+
+function buildQueryString( possibleQuery, options ){
+  var query = '';
+  for ( var i=0; i<possibleQuery.length; i++ )
+    if ( possibleQuery[i] in options )
+      query += (query=='' ? '?' : '&' ) + possibleQuery[i] + '=' + encodeURIComponent(options[possibleQuery[i]]);
+  return query;
+}
+
 module.exports = {
-  process: process
+  process: process,
+  buildHeaders: buildHeaders,
+  buildQueryString: buildQueryString
 };

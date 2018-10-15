@@ -1,24 +1,15 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function list( auth, parameters, callback ) {
-  var query = '';
-  query = query + '?fileSystemId=' + encodeURIComponent( parameters.fileSystemId);
-  if ( 'limit' in parameters )
-    query = query + '&limit=' + encodeURIComponent( parameters.limit );
-  if ( 'page' in parameters )
-    query = query + '&page=' + encodeURIComponent( parameters.page );
-  if ( 'sortOrder' in parameters )
-    query = query + '&sortOrder=' + encodeURIComponent( parameters.sortOrder );
-  if ( 'lifecycleState' in parameters )
-    query = query + '&lifecycleState=' + encodeURIComponent( parameters.lifecycleState );
-  if ( 'id' in parameters )
-    query = query + '&id=' + encodeURIComponent( parameters.id );
-
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['fileSystemId', 'id', 'limit', 'page', 'sortOrder', 'lifecycleState'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/snapshots' +
-                            query,
+                   { path : auth.RESTversion + '/snapshots' + queryString,
                      host : endpoint.service.fileStorage[auth.region],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };

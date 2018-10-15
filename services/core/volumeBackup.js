@@ -1,7 +1,9 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function create( auth, parameters, callback ){
+  var possibleHeaders = ['opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/volumeBackups',
                      host : endpoint.service.core[auth.region],
@@ -12,54 +14,48 @@ function create( auth, parameters, callback ){
 }
 
 function update( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/volumeBackups/' + encodeURIComponent(parameters.volumeBackupId),
                      host : endpoint.service.core[auth.region],
                      method : 'PUT',
-                     'if-match' : parameters['if-match'],
+                     headers : headers,
                      body : options },
                    callback );
 };
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = [];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/volumeBackups/' + encodeURIComponent(parameters.volumeBackupId),
                      host : endpoint.service.core[auth.region],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };
 
 function drop( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/volumeBackups/' + encodeURIComponent(parameters.volumeBackupId),
                      host : endpoint.service.core[auth.region],
-                     'if-match' : parameters['if-match'],
+                     headers : headers,
                      method : 'DELETE' },
                     callback );
 };
 
 function list( auth, parameters, callback ) {
-  var query = '';
-  query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId);
-  if ( 'volumeId' in parameters )
-    query = query + '&volumeId=' + encodeURIComponent( parameters.volumeId );
-  if ( 'limit' in parameters )
-    query = query + '&limit=' + encodeURIComponent( parameters.limit );
-  if ( 'page' in parameters )
-    query = query + '&page=' + encodeURIComponent( parameters.page );
-  if ( 'displayName' in parameters )
-    query = query + '&displayName=' + encodeURIComponent( parameters.displayName );
-  if ( 'sortBy' in parameters )
-    query = query + '&sortBy=' + encodeURIComponent( parameters.sortBy );
-  if ( 'sortOrder' in parameters )
-    query = query + '&sortOrder=' + encodeURIComponent( parameters.sortOrder );
-  if ( 'lifecycleState' in parameters )
-    query = query + '&lifecycleState=' + encodeURIComponent( parameters.lifecycleState );
-
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['compartmentId', 'volumeId', 'displayName', 'limit', 'page', 'sortBy', 'sortOrder', 'lifecycleState'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/volumeBackups' +
-                            query,
+                   { path : auth.RESTversion + '/volumeBackups' + queryString,
                      host : endpoint.service.core[auth.region],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };

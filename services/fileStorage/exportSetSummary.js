@@ -2,28 +2,14 @@ var ocirest = require('../../ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function list( auth, parameters, callback ) {
-  var query = '';
-  query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId);
-  query = query + '&availabilityDomain=' + encodeURIComponent( parameters.availabilityDomain);
-  if ( 'limit' in parameters )
-    query = query + '&limit=' + encodeURIComponent( parameters.limit );
-  if ( 'page' in parameters )
-    query = query + '&page=' + encodeURIComponent( parameters.page );
-  if ( 'displayName' in parameters )
-    query = query + '&displayName=' + encodeURIComponent( parameters.displayName );
-  if ( 'sortBy' in parameters )
-    query = query + '&sortBy=' + encodeURIComponent( parameters.sortBy );
-  if ( 'sortOrder' in parameters )
-    query = query + '&sortOrder=' + encodeURIComponent( parameters.sortOrder );
-  if ( 'lifecycleState' in parameters )
-    query = query + '&lifecycleState=' + encodeURIComponent( parameters.lifecycleState );
-  if ( 'id' in parameters )
-    query = query + '&id=' + encodeURIComponent( parameters.id );
-
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['availabilityDomain', 'compartmentId', 'limit', 'page', 'sortBy', 'sortOrder', 'lifecycleState', 'displayName', 'id' ];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/exportSets' +
-                            query,
+                   { path : auth.RESTversion + '/exportSets' + queryString,
                      host : endpoint.service.fileStorage[auth.region],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };

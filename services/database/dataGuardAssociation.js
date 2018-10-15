@@ -1,19 +1,23 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function create( auth, parameters, callback ) {
+  var possibleHeaders = ['opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + '/databases/' +
                               encodeURIComponent(parameters.databaseId) + 
                               '/dataGuardAssociations' ,
                        host : endpoint.service.database[auth.region],
                        method : 'POST',
-                       'opc-retry-token' : parameters['opc-retry-token'],
+                       headers : headers,
                        body : parameters.body },
                      callback );
   };
 
 function failover( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + '/databases/' +
                               encodeURIComponent(parameters.databaseId) + 
@@ -22,12 +26,14 @@ function failover( auth, parameters, callback ) {
                               '/actions/failover',
                        host : endpoint.service.database[auth.region],
                        method : 'POST',
-                       'opc-retry-token' : parameters['opc-retry-token'],
+                       headers : headers,
                        body : parameters.body },
                      callback );
   };
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = [];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + '/databases/' +
                               encodeURIComponent(parameters.databaseId) + 
@@ -35,55 +41,58 @@ function get( auth, parameters, callback ) {
                               encodeURIComponent(parameters.dataGuardAssociationsId) +
                               '/actions/failover',
                        host : endpoint.service.database[auth.region],
+                       headers : headers,
                        method : 'GET',
                        },
                      callback );
   };
 
 function list( auth, parameters, callback ) {
-    var query = '';
-    if ( 'limit' in parameters )
-      query = (query=='' ? '?' : '&' ) + 
-            'limit=' + encodeURIComponent( parameters.limit );
-    if ( 'page' in parameters )
-      query = (query=='' ? '?' : '&' ) + 
-            'page=' + encodeURIComponent( parameters.page );
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['limit', 'page'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
 
     ocirest.process( auth,
                      { path : auth.RESTversion + '/databases/' +
                               encodeURIComponent(parameters.databaseId) + 
-                              '/dataGuardAssociations' + query,
+                              '/dataGuardAssociations' + queryString,
                        host : endpoint.service.database[auth.region],
+                       headers : headers,
                        method : 'GET' },
                      callback );
   };
 
 function reinstate( auth, parameters, callback ) {
-    ocirest.process( auth,
-                     { path : auth.RESTversion + '/databases/' +
-                              encodeURIComponent(parameters.databaseId) + 
-                              '/dataGuardAssociations/' + 
-                              encodeURIComponent(parameters.dataGuardAssociationsId) +
-                              '/actions/reinstate',
-                       host : endpoint.service.database[auth.region],
-                       'if-match' : parameters['if-match'],
-                       method : 'POST',
-                       body : parameters.body },
-                     callback );
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  ocirest.process( auth,
+                   { path : auth.RESTversion + '/databases/' +
+                            encodeURIComponent(parameters.databaseId) + 
+                            '/dataGuardAssociations/' + 
+                            encodeURIComponent(parameters.dataGuardAssociationsId) +
+                            '/actions/reinstate',
+                     host : endpoint.service.database[auth.region],
+                     headers : headers,
+                     method : 'POST',
+                     body : parameters.body },
+                   callback );
   };
 
 function switchOver( auth, parameters, callback ) {
-    ocirest.process( auth,
-                     { path : auth.RESTversion + '/databases/' +
-                              encodeURIComponent(parameters.databaseId) + 
-                              '/dataGuardAssociations/' + 
-                              encodeURIComponent(parameters.dataGuardAssociationsId) +
-                              '/actions/switchover',
-                       host : endpoint.service.database[auth.region],
-                       'if-match' : parameters['if-match'],
-                       method : 'POST',
-                       body : parameters.body },
-                     callback );
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  ocirest.process( auth,
+                   { path : auth.RESTversion + '/databases/' +
+                            encodeURIComponent(parameters.databaseId) + 
+                            '/dataGuardAssociations/' + 
+                            encodeURIComponent(parameters.dataGuardAssociationsId) +
+                            '/actions/switchover',
+                     host : endpoint.service.database[auth.region],
+                     headers : headers,
+                     method : 'POST',
+                     body : parameters.body },
+                   callback );
   };
 
 

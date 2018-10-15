@@ -1,53 +1,61 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function create( auth, parameters, callback ) {
-    ocirest.process( auth,
-                     { path : auth.RESTversion + '/dynamicGroups/',
-                       host : endpoint.service.iam[auth.region],
-                       method : 'POST',
-                       body : parameters.body,
-                       'opc-retry-token' : parameters['opc-retry-token'] },
-                      callback )
+  var possibleHeaders = ['opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  ocirest.process( auth,
+                  { path : auth.RESTversion + '/dynamicGroups/',
+                     host : endpoint.service.iam[auth.region],
+                     method : 'POST',
+                     headers : headers,
+                     body : parameters.body },
+                    callback )
   };
 
 function drop( auth, parameters, callback ) {
-    ocirest.process( auth,
-                     { path : auth.RESTversion + 
-                              '/dynamicGroups/' + encodeURIComponent(parameters.dynamicGroupId),
-                       host : endpoint.service.iam[auth.region],
-                       method : 'DELETE',
-                       'if-match' : parameters['if-match'] },
-                      callback )
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  ocirest.process( auth,
+                   { path : auth.RESTversion + 
+                            '/dynamicGroups/' + encodeURIComponent(parameters.dynamicGroupId),
+                     host : endpoint.service.iam[auth.region],
+                     method : 'DELETE',
+                     headers : headers },
+                    callback )
   };
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = [];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth, 
                      { path : auth.RESTversion + '/dynamicGroups/' + encodeURIComponent(parameters.dynamicGroupId),
                        host : endpoint.service.iam[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };
 
 function list( auth, parameters, callback ) {
-    var query = '';
-    query = '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
-    if ( 'page' in parameters )
-      query = query + '&page=' + encodeURIComponent(parameters.page);
-    if ( 'limit' in parameters )
-      query = query + '&limit=' + encodeURIComponent(parameters.limit);
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['compartmentId','page','limit'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
     ocirest.process( auth, 
-                     { path : auth.RESTversion + '/dynamicGroups/',
+                     { path : auth.RESTversion + '/dynamicGroups/' + queryString,
                        host : endpoint.service.iam[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };
 
 function update( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth, 
                      { path : auth.RESTversion + '/dynamicGroups/' + encodeURIComponent(parameters.dynamicGroupId),
                        host : endpoint.service.iam[auth.region],
-                       'if-match' : parameters['if-match'],
+                       headers : headers,
                        body : parameters.body,
                        method : 'PUT' }, 
                      callback );

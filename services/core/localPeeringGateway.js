@@ -1,70 +1,77 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function connect( auth, parameters, callback ) {
+  var possibleHeaders = [];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + 
-                              '/localPeeringGateways/' + encodeURIComponent(parameters.localPeeringGatewayId),
+                              '/localPeeringGateways/' + encodeURIComponent(parameters.localPeeringGatewayId) +
+                              'actions/connect',
                        host : endpoint.service.core[auth.region],
                        method : 'POST',
                        body : parameters.body,
-                       'opc-retry-token' : parameters['opc-retry-token'] },
+                       headers : headers },
                       callback )
   };
 
 function create( auth, parameters, callback ) {
+  var possibleHeaders = ['opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + '/localPeeringGateways',
                        host : endpoint.service.core[auth.region],
                        method : 'POST',
                        body : parameters.body,
-                       'opc-retry-token' : parameters['opc-retry-token'] },
+                       headers : headers },
                       callback )
   };
 
 function drop( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + 
                       '/localPeeringGateways/' + encodeURIComponent(parameters.localPeeringGatewayId),
                        host : endpoint.service.core[auth.region],
                        method : 'DELETE',
-                       'if-match' : parameters['if-match'] },
+                       headers : headers },
                       callback )
   };
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = [];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth, 
                      { path : auth.RESTversion + 
                               '/localPeeringGateways/' + encodeURIComponent(parameters.localPeeringGatewayId),
                        host : endpoint.service.core[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };
 
 function list( auth, parameters, callback ) {
-    var query = '';
-    query = '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
-    query = '&vncId=' + encodeURIComponent(parameters.vncId);
-    if ( 'cpeId' in parameters )
-      query = query + '&cpeId=' + encodeURIComponent(parameters.cpeId);
-    if ( 'page' in parameters )
-      query = query + '&page=' + encodeURIComponent(parameters.page);
-    if ( 'limit' in parameters )
-      query = query + '&limit=' + encodeURIComponent(parameters.limit);
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['compartmentId', 'vcnId', 'limit', 'page'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
     ocirest.process( auth, 
-                     { path : auth.RESTversion + 
-                      '/localPeeringGateways' + query,
+                     { path : auth.RESTversion + '/localPeeringGateways' + queryString,
                        host : endpoint.service.core[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };
 
 function update( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth, 
                      { path : auth.RESTversion + 
                               '/localPeeringGateways/' + encodeURIComponent(parameters.localPeeringGatewayId),
                        host : endpoint.service.core[auth.region],
-                       'if-match' : parameters['if-match'],
+                       headers : headers,
                        body : parameters.body,
                        method : 'PUT' }, 
                      callback );

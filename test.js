@@ -13,10 +13,10 @@ var auth={
 };
 auth.privateKey = fs.readFileSync(auth.privateKeyPath, 'ascii');
 
-//var compartmentId = 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq';
+var compartmentId = 'ocid1.tenancy.oc1..aaaaaaaahm47pxqwunxjqel6jhiuyodldss4z2tx4m24cfmyqys3zndfw3ta';
 //var AWDOCID = 'ocid1.autonomousdwdatabase.oc1.iad.abuwcljtbqogthz3o4zffd7tcddcfgl4edoi5ro2chquqk7ufslbgiwsywjq';
 
-//oci.database.autonomousDatabase.list( auth, { compartmentId : compartmentId}, function(data){console.log(data[0].dbName);});
+oci.database.autonomousDatabase.list( auth, { compartmentId : compartmentId}, function(data){console.log(data);});
 //oci.database.autonomousDataWarehouse.list( auth, { compartmentId: compartmentId }, function(data){console.log(data[0].dbName);});
 
 var ATPOCID = 'ocid1.autonomousdatabase.oc1.iad.abuwcljskistzoklbyg2wkmparvlfblisrdc6sjhcltqcqvfs777o4uutjcq';
@@ -50,7 +50,7 @@ parameters = {
 //oci.database.dbVersionSummary.list( auth, parameters, function(data){console.log(data);}  );
 
 auth.RESTversion = '/20180409';
-oci.search.resourceType.list( auth, parameters, function(data){console.log(JSON.stringify(data[0]));}  );
+//oci.search.resourceType.list( auth, parameters, function(data){console.log(JSON.stringify(data[0]));}  );
 
 
 /*
@@ -185,4 +185,24 @@ auth.compartmentId = 'ocid1.compartment.oc1..aaaaaaaaoii6dck3vphxejxnu66gxrlxvi4
 auth.RESTversion = '/20160918';
 auth.limit = 100;
 oci.database.dbVersionSummary.list( auth, parameters, function(data){console.log(data);});
+*/
+/*
+var o = {
+  a : 12345,
+  b : 67890,
+  c : 'abc',
+  d : 'xyz',
+  'a-b' : 'blah'
+};
+
+var u = {};
+
+headers = [ 'a', 'e', 'd', 'a-b', 'z' ];
+
+for ( var i=0; i<headers.length; i++ ) {
+  if ( headers[i] in o )
+    u[headers[i]] = o[headers[i]];
+}
+
+console.log( u );
 */

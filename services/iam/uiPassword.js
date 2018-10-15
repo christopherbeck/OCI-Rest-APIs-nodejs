@@ -1,7 +1,9 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function createOrReset( auth, parameters, callback ) {
+    var possibleHeaders = ['opc-retry-token'];
+    var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + 
                              '/users/' + encodeURIComponent(parameters.userId) +
@@ -9,7 +11,7 @@ function createOrReset( auth, parameters, callback ) {
                        host : endpoint.service.iam[auth.region],
                        method : 'POST',
                        body : parameters.body,
-                       'opc-retry-token' : parameters['opc-retry-token'] },
+                       headers : headers },
                       callback )
   };
 

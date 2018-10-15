@@ -1,56 +1,54 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = [];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/databases/' + 
                             encodeURIComponent(parameters.databaseId),
                      host : endpoint.service.database[auth.region],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };
 
 function list( auth, parameters, callback ) {
-  var query = '';
-  if ( 'limit' in parameters )
-    query = query + '&limit=' + encodeURIComponent(parameters.limit);
-  if ( 'page' in parameters )
-    query = query + '&page=' + encodeURIComponent(parameters.page);
-  if ( 'sortBy' in parameters )
-    query = query + '&sortBy=' + encodeURIComponent(parameters.sortBy);
-  if ( 'sortOrder' in parameters )
-    query = query + '&sortOrder=' + encodeURIComponent(parameters.sortOrder);
-  if ( 'lifecycleState' in parameters )
-    query = query + '&lifecycleState=' + encodeURIComponent(parameters.lifecycleState);
-  if ( 'dbName' in parameters )
-    query = query + '&dbName=' + encodeURIComponent(parameters.dbName);
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['dbHomeId', 'compartmentId', 'limit', 'page', 'sortBy', 'sortOrder', 'lifecycleState'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/databases' + 
-                            '?compartmentId=' + encodeURIComponent(parameters.compartmentId) +
-                            '&dbHomeId=' + encodeURIComponent(parameters.dbHomeId) + query,
+                   { path : auth.RESTversion + '/databases' + queryString,
                      host : endpoint.service.database[auth.region],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };
 
 function restore( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                     { path: auth.RESTversion + '/databases/' + 
-                            encodeURIComponent(parameters.databaseId),
+                            encodeURIComponent(parameters.databaseId) +
+                            '/actions/restore',
                      host : endpoint.service.database[auth.region],
                      method : 'POST',
-                     'if-match' : parameters['if-match'],
+                     headers : headers,
                      body : parameters.body },
                    callback );
 };
 
 function update( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                     { path: auth.RESTversion + '/databases/' + 
                             encodeURIComponent(parameters.databaseId),
                      host : endpoint.service.database[auth.region],
                      method : 'PUT',
-                     'if-match' : parameters['if-match'],
+                     headers : headers,
                      body : parameters.body },
                    callback );
 };

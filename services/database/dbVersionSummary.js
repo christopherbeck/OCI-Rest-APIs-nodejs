@@ -1,23 +1,17 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function list( auth, parameters, callback ) {
-    var query = '';
-    query = query + '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
-    if( 'limit' in parameters )
-      query = query + '&limit=' + encodeURIComponent(parameters.limit);
-    if( 'page' in parameters )
-      query = query + '&page=' + encodeURIComponent(parameters.page);
-    if( 'dbSystemShape' in parameters )
-      query = query + '&dbSystemShape=' + encodeURIComponent(parameters.dbSystemShape);
-    if( 'dbSystemId' in parameters )
-      query = query + '&dbSystemId=' + encodeURIComponent(parameters.dbSystemId);
-    
-    ocirest.process( auth,
-                     { path : auth.RESTversion + '/dbVersions' + query,
-                       host : endpoint.service.database[auth.region],
-                       method : 'GET' },
-                     callback );
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['dbSystemShape', 'compartmentId', 'limit', 'page', 'dbSystemId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
+  ocirest.process( auth,
+                   { path : auth.RESTversion + '/dbVersions' + queryString,
+                     host : endpoint.service.database[auth.region],
+                     headers : headers,
+                     method : 'GET' },
+                   callback );
   };
 
 module.exports = {

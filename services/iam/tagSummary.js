@@ -1,17 +1,17 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function list( auth, parameters, callback ) {
-    var query = '';
-    if ( 'page' in parameters )
-      query = query + (query==''?'?':'&') + 'page=' + encodeURIComponent(parameters.page);
-    if ( 'limit' in parameters )
-      query = query + (query==''?'?':'&') + 'limit=' + encodeURIComponent(parameters.limit);
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['page', 'limit'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
     ocirest.process( auth, 
                      { path : auth.RESTversion + 
                               '/tagNamespaces/' + encodeURIComponent(parameters.policyId) +
-                              '/tags' + query,
+                              '/tags' + queryString,
                        host : endpoint.service.iam[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };

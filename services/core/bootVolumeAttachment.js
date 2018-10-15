@@ -1,42 +1,40 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 
 function attach( auth, parameters, callback ){
+  var possibleHeaders = ['opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/bootVolumeAttachments/' + encodeURIComponent(parameters.bootVolumeId),
+                   { path : auth.RESTversion + '/bootVolumeAttachments/',
                      host : endpoint.service.core[auth.region],
-                     method : 'PUT',
-                     'if-match' :  parameters['if-match'],
+                     method : 'POST',
+                     headers : headers,
                      body : parameters.body }, 
                    callback );
 }
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = [];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/bootVolumeAttachments/' + 
                             encodeURIComponent(parameters.bootVolumeAttachmentId),
                      host : endpoint.service.core[auth.region],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };
 
 function list( auth, parameters, callback ) {
-  var query = '';
-  query = query + '?availabilityDomain=' + encodeURIComponent(parameters.availabilityDomain);
-  query = query + '&compartmentId=' + encodeURIComponent(parameters.compartmentId);
-  if ( parameters.limit !== undefined )
-    query = query + '&limit=' + encodeURIComponent(parameters.limit);
-  if ( parameters.page !== undefined )
-    query = query + '&page=' + encodeURIComponent(parameters.page);
-  if ( parameters.instanceId !== undefined )
-    query = query + '&instanceId=' + encodeURIComponent(parameters.instanceId);
-  if ( parameters.bootVolumeId !== undefined )
-    query = query + '&bootVolumeId=' + encodeURIComponent(parameters.bootVolumeId);
-
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['availabilityDomain', 'compartmentId', 'limit', 'page', 'instanceId', 'bootVolumeId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth, 
-                   { path : auth.RESTversion + '/bootVolumeAttachments/' + query,
+                   { path : auth.RESTversion + '/bootVolumeAttachments/' + queryString,
                      host : endpoint.service.core[auth.region],
+                     headers : headers,
                      method : 'GET' }, 
                    callback );
 };

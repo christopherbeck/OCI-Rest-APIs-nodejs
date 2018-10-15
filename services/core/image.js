@@ -1,27 +1,33 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function create( auth, parameters, callback ) {
+  var possibleHeaders = ['opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + '/images',
                        host : endpoint.service.core[auth.region],
                        method : 'POST',
                        body : parameters.body,
-                       'opc-retry-token' : parameters['opc-retry-token'] },
+                       headers : headers },
                       callback )
   };
 
 function drop( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + 
                       '/images/' + encodeURIComponent(parameters.imageId),
                        host : endpoint.service.core[auth.region],
                        method : 'DELETE',
-                       'if-match' : parameters['if-match'] },
+                       headers : head },
                       callback )
   };
 
 function exportImage( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match','opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + 
                               '/images/' + encodeURIComponent(parameters.imageId) +
@@ -29,54 +35,43 @@ function exportImage( auth, parameters, callback ) {
                        host : endpoint.service.core[auth.region],
                        method : 'POST',
                        body : parameters.body,
-                       'if-match' : parameters['if-match'],
-                       'opc-retry-token' : parameters['opc-retry-token'] },
+                       headers : headers },
                       callback )
   };
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = [];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth, 
                      { path : auth.RESTversion + 
                               '/images/' + encodeURIComponent(parameters.imageId),
                        host : endpoint.service.core[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };
 
 function list( auth, parameters, callback ) {
-    var query = '';
-    query = '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
-    if ( 'page' in parameters )
-      query = query + '&page=' + encodeURIComponent(parameters.page);
-    if ( 'displayName' in parameters )
-      query = query + '&displayName=' + encodeURIComponent(parameters.displayName);
-    if ( 'operatingSystem' in parameters )
-      query = query + '&operatingSystem=' + encodeURIComponent(parameters.operatingSystem);
-    if ( 'operatingSystemVersion' in parameters )
-      query = query + '&operatingSystemVersion=' + encodeURIComponent(parameters.operatingSystemVersion);
-    if ( 'shape' in parameters )
-      query = query + '&shape=' + encodeURIComponent(parameters.shape);
-    if ( 'sortBy' in parameters )
-      query = query + '&sortBy=' + encodeURIComponent(parameters.sortBy);
-    if ( 'sortOrder' in parameters )
-      query = query + '&sortOrder=' + encodeURIComponent(parameters.sortOrder);
-    if ( 'lifecycleState' in parameters )
-      query = query + '&lifecycleState=' + encodeURIComponent(parameters.lifecycleState);
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['compartmentId', 'displayName', 'operatingSystem', 'operatingSystemVersion', 
+                              'shape', 'limit', 'page', 'sortBy', 'sortOrder', 'lifecycleState'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
     ocirest.process( auth, 
-                     { path : auth.RESTversion + 
-                      '/images' + query,
+                     { path : auth.RESTversion + '/images' + queryString,
                        host : endpoint.service.core[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };
 
 function update( auth, parameters, callback ) {
+  var possibleHeaders = ['opc-retry-token', 'if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth, 
-                     { path : auth.RESTversion + 
-                              '/images/' + encodeURIComponent(parameters.imageId),
+                     { path : auth.RESTversion + '/images/' + encodeURIComponent(parameters.imageId),
                        host : endpoint.service.core[auth.region],
-                       'if-match' : parameters['if-match'],
-                       'opc-retry-token' : parameters['opc-retry-token'],
+                       headers : headers,
                        body : parameters.body,
                        method : 'PUT' }, 
                      callback );

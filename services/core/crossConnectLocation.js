@@ -1,17 +1,16 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function list( auth, parameters, callback ) {
-    var query = '';
-    query = '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
-    if ( 'page' in parameters )
-      query = query + '&page=' + encodeURIComponent(parameters.page);
-    if ( 'limit' in parameters )
-      query = query + '&limit=' + encodeURIComponent(parameters.limit);
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['compartmentId', 'limit', 'page'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
     ocirest.process( auth, 
                      { path : auth.RESTversion + 
-                      '/crossConnectLocations' + query,
+                      '/crossConnectLocations' + queryString,
                        host : endpoint.service.core[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };

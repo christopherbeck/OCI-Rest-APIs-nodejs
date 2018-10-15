@@ -1,48 +1,51 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function create( auth, parameters, callback ) {
+  var possibleHeaders = ['opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + '/instanceConsoleConnections',
                        host : endpoint.service.core[auth.region],
                        method : 'POST',
                        body : parameters.body,
-                       'opc-retry-token' : parameters['opc-retry-token'] },
+                       headers : headers },
                       callback )
   };
 
 function drop( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : auth.RESTversion + 
                       '/instanceConsoleConnections/' + encodeURIComponent(parameters.instanceConsoleConnectionId),
                        host : endpoint.service.core[auth.region],
                        method : 'DELETE',
-                       'if-match' : parameters['if-match'] },
+                       headers : headers },
                       callback )
   };
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = [];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth, 
                      { path : auth.RESTversion + 
                               '/instanceConsoleConnections/' + encodeURIComponent(parameters.instanceConsoleConnectionId),
                        host : endpoint.service.core[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };
 
 function list( auth, parameters, callback ) {
-    var query = '';
-    query = '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
-    if ( 'instanceId' in parameters )
-      query = query + '&instanceId=' + encodeURIComponent(parameters.instanceId);
-    if ( 'page' in parameters )
-      query = query + '&page=' + encodeURIComponent(parameters.page);
-    if ( 'limit' in parameters )
-      query = query + '&limit=' + encodeURIComponent(parameters.limit);
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['compartmentId', 'instanceId', 'limit', 'page'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
     ocirest.process( auth, 
-                     { path : auth.RESTversion + 
-                      '/instanceConsoleConnections' + query,
+                     { path : auth.RESTversion + '/instanceConsoleConnections' + queryString,
                        host : endpoint.service.core[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };

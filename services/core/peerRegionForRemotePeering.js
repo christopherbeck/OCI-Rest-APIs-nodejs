@@ -1,11 +1,13 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function list( auth, parameters, callback ) {
+    var possibleHeaders = [];
+    var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth, 
-                     { path : auth.RESTversion + 
-                      '/allowedPeerRegionsForRemotePeering',
+                     { path : auth.RESTversion + '/allowedPeerRegionsForRemotePeering',
                        host : endpoint.service.core[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };

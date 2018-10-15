@@ -1,129 +1,102 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 
 function updateDomain( auth, parameters, callback ) {
-  var query = '';
-  if ( 'compartmentId' in parameters )
-    query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId );
+  var possibleHeaders = ['if-match', 'if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + 
                             '/zones/' + encodeURIComponent(parameters.zoneNameOrId) +
                             '/records/' + encodeURIComponent(parameters.domain) +
-                            query,
+                            queryString,
                      host : endpoint.service.dns[auth.region],
                      method : 'PUT',
-                     'If-Match' : parameters['If-Match'],
-                     'If-Unmodified-Since' : parameters['If-Unmodified-Since'],
+                     headers : headers,
                      body : parameters.body },
                    callback );
 };
 
 function updateZone( auth, parameters, callback ) {
-  var query = '';
-  if ( 'compartmentId' in parameters )
-    query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId );
+  var possibleHeaders = ['if-match', 'if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + 
                             '/zones/' + encodeURIComponent(parameters.zoneNameOrId) +
-                            '/records' + query,
+                            '/records' + queryString,
                      host : endpoint.service.dns[auth.region],
                      method : 'PUT',
-                     'If-Match' : parameters['If-Match'],
-                     'If-Unmodified-Since' : parameters['If-Unmodified-Since'],
+                     headers : headers,
                      body : parameters.body },
                    callback );
 };
 
 
 function getDomain( auth, parameters, callback ) {
-  var query = '';
-  if ( 'limit' in parameters )
-    query = query + (query==''?'?':'&') + 'limit=' + encodeURIComponent( parameters.limit );
-  if ( 'page' in parameters )
-    query = query + (query==''?'?':'&') + 'page=' + encodeURIComponent( parameters.page );
-  if ( 'zoneVersion' in parameters )
-    query = query + (query==''?'?':'&') + 'zoneVersion=' + encodeURIComponent( parameters.zoneVersion );
-  if ( 'domain' in parameters )
-    query = query + (query==''?'?':'&') + 'domain=' + encodeURIComponent( parameters.domain );
-  if ( 'domainContains' in parameters )
-    query = query + (query==''?'?':'&') + 'domainContains=' + encodeURIComponent( parameters.domainContains );
-  if ( 'rtype' in parameters )
-    query = query + (query==''?'?':'&') + 'rtype=' + encodeURIComponent( parameters.rtype );
-  if ( 'sortBy' in parameters )
-    query = query + (query==''?'?':'&') + 'sortBy=' + encodeURIComponent( parameters.sortBy );
-  if ( 'sortOrder' in parameters )
-    query = query + (query==''?'?':'&') + 'sortOrder=' + encodeURIComponent( parameters.sortOrder );
-  if ( 'compartmentId' in parameters )
-    query = query + (query==''?'?':'&') + 'compartmentId=' + encodeURIComponent( parameters.compartmentId );
+  var possibleHeaders = ['if-none-match', 'if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId', 'limit', 'page', 'sortBy', 'sortOrder', 'zoneVersion', 'rType'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
+
   ocirest.process( auth,
                    { path : auth.RESTversion + 
                             '/zones/' + encodeURIComponent(parameters.zoneNameOrId) +
-                            '/records' + query,
+                            '/records/' + encodeURIComponent( parameters.domain) +
+                            queryString,
                      host : endpoint.service.dns[auth.region],
-                     'If-Match' : parameters['If-Match'],
-                     'If-Unmodified-Since' : parameters['If-Unmodified-Since'],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };
 
 function getZone( auth, parameters, callback ) {
-  var query = '';
-  if ( 'limit' in parameters )
-    query = query + (query==''?'?':'&') + 'limit=' + encodeURIComponent( parameters.limit );
-  if ( 'page' in parameters )
-    query = query + (query==''?'?':'&') + 'page=' + encodeURIComponent( parameters.page );
-  if ( 'zoneVersion' in parameters )
-    query = query + (query==''?'?':'&') + 'zoneVersion=' + encodeURIComponent( parameters.zoneVersion );
-  if ( 'rtype' in parameters )
-    query = query + (query==''?'?':'&') + 'rtype=' + encodeURIComponent( parameters.rtype );
-  if ( 'sortBy' in parameters )
-    query = query + (query==''?'?':'&') + 'sortBy=' + encodeURIComponent( parameters.sortBy );
-  if ( 'sortOrder' in parameters )
-    query = query + (query==''?'?':'&') + 'sortOrder=' + encodeURIComponent( parameters.sortOrder );
-  if ( 'compartmentId' in parameters )
-    query = query + (query==''?'?':'&') + 'compartmentId=' + encodeURIComponent( parameters.compartmentId );
+  var possibleHeaders = ['if-none-match', 'if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId', 'limit', 'page', 'sortBy', 'sortOrder', 'zoneVersion', 'rType', 'domain', 'domainContains'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + 
                             '/zones/' + encodeURIComponent(parameters.zoneNameOrId) +
-                            '/records/' + encodeURIComponent(parameters.domain) +
-                            query,
+                            '/records' + queryString,
                      host : endpoint.service.dns[auth.region],
-                     'If-Match' : parameters['If-Match'],
-                     'If-Unmodified-Since' : parameters['If-Unmodified-Since'],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };
 
 
 function patchDomain( auth, parameters, callback ) {
-  var query = '';
-  if ( 'compartmentId' in parameters )
-    query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId );
+  var possibleHeaders = ['if-match', 'if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + 
                             '/zones/' + encodeURIComponent(parameters.zoneNameOrId) +
-                            '/records' + query,
+                            '/records/' + encodeURIComponent(parameters.domain) + 
+                            queryString,
                      host : endpoint.service.dns[auth.region],
-                     'If-Match' : parameters['If-Match'],
-                     'If-Unmodified-Since' : parameters['If-Unmodified-Since'],
+                     headers : headers,
                      body: parameters.body,
                      method : 'PATCH' },
                     callback );
 };
 
 function patchZone( auth, parameters, callback ) {
-  var query = '';
-  if ( 'compartmentId' in parameters )
-    query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId );
+  var possibleHeaders = ['if-match', 'if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + 
                             '/zones/' + encodeURIComponent(parameters.zoneNameOrId) +
-                            '/records/' + encodeURIComponent(parameters.domain) +
-                            query,
+                            '/records' + queryString,
                      host : endpoint.service.dns[auth.region],
-                     'If-Match' : parameters['If-Match'],
-                     'If-Unmodified-Since' : parameters['If-Unmodified-Since'],
+                     headers : headers,
                      body: parameters.body,
                      method : 'PATCH' },
                     callback );
@@ -131,17 +104,17 @@ function patchZone( auth, parameters, callback ) {
 
 
 function drop( auth, parameters, callback ) {
-  var query = '';
-  if ( 'compartmentId' in parameters )
-    query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId );
+  var possibleHeaders = ['if-match', 'if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + 
                             '/zones/' + encodeURIComponent(parameters.zoneNameOrId) +
                             '/records/' + encodeURIComponent(parameters.domain) +
-                            query,
+                            queryString,
                      host : endpoint.service.dns[auth.region],
-                     'If-Match' : parameters['If-Match'],
-                     'If-Unmodified-Since' : parameters['If-Unmodified-Since'],
+                     headers : headers,
                      method : 'DELETE' },
                     callback );
 };

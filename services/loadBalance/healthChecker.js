@@ -1,7 +1,9 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function update( auth, parameters, callback ) {
+  var possibleHeaders = ['opc-request-id','opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + 
                             '/loadBalancers/' + encodeURIComponent(parameters.loadBalancerId) +
@@ -16,13 +18,15 @@ function update( auth, parameters, callback ) {
 };
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = ['opc-request-id'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + 
                             '/loadBalancers/' + encodeURIComponent(parameters.loadBalancerId) +
                             '/backendSets/' + encodeURIComponent( parameters.backendSetName) +
                             '/healthChecker',
                      host : endpoint.service.loadBalance[auth.region],
-                     'opc-request-id' : parameters['opc-request-id'],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };

@@ -209,15 +209,22 @@ function copy( auth, parameters, callback ){
 }
 
 function put( auth, parameters, callback ){
-  var fs = require('fs');
-  var buffer = fs.readFileSync(parameters.fileName);
+  //var fs = require('fs');
+  //var buffer = fs.readFileSync(parameters.fileName);
   ocirest.process( auth,
                    { path : '/n/' + encodeURIComponent(parameters.namespaceName) + 
                             '/b/' + encodeURIComponent(parameters.bucketName) + 
                             '/o/' + encodeURIComponent(parameters.objectName) ,
                      host : endpoint.service.objectStore[auth.region],
+                     'if-match' : parameters['if-match'],
+                     'if-none-match' : parameters['if-none-match'],
                      'opc-client-request-id' : parameters['opc-client-request-id'],
-                     body : buffer,
+                     Expect : parameters.Expect,
+                     'Content-Length' : paramters['Content-Length'],
+                     'Content-MD5' : parameters['Content-MD5'],
+                     'Content-Type' : parameters['Content-type'],
+                     'Content-Language' : parameters['Content-Language'],
+                     body : parameters.body,
                      uploadFile: true,
                      method : 'PUT' },
                    callback ); 

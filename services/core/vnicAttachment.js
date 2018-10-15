@@ -1,51 +1,49 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function attach( auth, parameters, callback ){
+  var possibleHeaders = ['opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/vnicAttachments',
+                   { path : auth.RESTversion + '/vnicAttachments/',
                      host : endpoint.service.core[auth.region],
                      method : 'POST',
-                     'opc-retry-token' : parameters['opc-retry-token'],
+                     headers : headers,
                      body : options }, 
                    callback );
 }
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = [];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/vnicAttachments/' + encodeURIComponent(parameters.vnicAttachmentId),
                      host : endpoint.service.core[auth.region],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };
 
 function detatch( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/vnicAttachments/' + encodeURIComponent(parameters.vnicAttachmentId),
                      host : endpoint.service.core[auth.region],
-                     'if-match' : parameters['if-match'],
+                     headers : headers,
                      method : 'DELETE' },
                     callback );
 };
 
 function list( auth, parameters, callback ) {
-  var query = '';
-  query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId);
-  if ( 'availabilityDomain' in parameters )
-    query = query + '&availabilityDomain=' + encodeURIComponent( parameters.availabilityDomain );
-  if ( 'instanceId' in parameters )
-    query = query + '&instanceId=' + encodeURIComponent( parameters.instanceId );
-  if ( 'limit' in parameters )
-    query = query + '&limit=' + encodeURIComponent( parameters.limit );
-  if ( 'page' in parameters )
-    query = query + '&page=' + encodeURIComponent( parameters.page );
-  if ( 'vnicId' in parameters )
-    query = query + '&vnicId=' + encodeURIComponent( parameters.vnicId );
-
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['compartmentId', 'availabilityDomain', 'instanceId', 'limit', 'page', 'vnicId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/vnicAttachments/' +
-                            query,
+                   { path : auth.RESTversion + '/vnicAttachments/' + queryString,
                      host : endpoint.service.core[auth.region],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };

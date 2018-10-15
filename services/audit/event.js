@@ -1,19 +1,16 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function list( auth, parameters, callback ) {
-  var query = '';
-  query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId);
-  query = query + '?startTime=' + encodeURIComponent( parameters.startTime);
-  query = query + '?endTime=' + encodeURIComponent( parameters.endTime);
-  if ( 'page' in parameters )
-    query = query + '&page=' + encodeURIComponent( parameters.page );
-
+  var possibleHeaders = ['opc-client-response'];
+  var possibleQueryStrings = ['compartmentId', 'startTime', 'endTime', 'page' ];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
+  
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/auditEvents' +
-                            query,
+                   { path : auth.RESTversion + '/auditEvents' + queryString,
                      host : endpoint.service.audit[auth.region],
-                     'opc-client-response' : parameters['opc-client-response'],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };

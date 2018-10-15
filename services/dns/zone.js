@@ -1,82 +1,74 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function create( auth, parameters, callback ){
-  var query = '';
-  query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId);
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['compartmentId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/zones' + query,
+                   { path : auth.RESTversion + '/zones' + queryString,
                      host : endpoint.service.dns[auth.region],
+                     headers : headers,
                      method : 'POST',
-                     body : options }, 
+                     body : parameters.body }, 
                    callback );
 }
 
 function update( auth, parameters, callback ) {
-  var query = '';
-  query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId);
+  var possibleHeaders = ['if-match','if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/zones/' + encodeURIComponent(parameters.zoneNameOrId),
+                   { path : auth.RESTversion + 
+                            '/zones/' + encodeURIComponent(parameters.zoneNameOrId) +
+                            queryString,
                      host : endpoint.service.dns[auth.region],
                      method : 'PUT',
-                     'If-Match' : parameters['If-Match'],
-                     'if-Unmodified-Since' : parameters['if-Unmodified-Since'],
-                     body : options },
+                     headers : headers,
+                     body : parameters.body },
                    callback );
 };
 
 function get( auth, parameters, callback ) {
-  var query = '';
-  query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId);
+  var possibleHeaders = ['if-none-match','if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/zones/' + encodeURIComponent(parameters.zoneNameOrId),
+                   { path : auth.RESTversion + 
+                            '/zones/' + encodeURIComponent(parameters.zoneNameOrId) +
+                            queryString,
                      host : endpoint.service.dns[auth.region],
-                     'If-Match' : parameters['If-Match'],
-                     'if-Unmodified-Since' : parameters['if-Unmodified-Since'],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };
 
 function drop( auth, parameters, callback ) {
-  var query = '';
-  query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId);
+  var possibleHeaders = ['if-match','if-unmodified-since'];
+  var possibleQueryStrings = ['compartmentId'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/zones/' + encodeURIComponent(parameters.zoneNameOrId) + query,
+                   { path : auth.RESTversion + '/zones/' + encodeURIComponent(parameters.zoneNameOrId) + queryString,
                      host : endpoint.service.dns[auth.region],
-                     'If-Match' : parameters['If-Match'],
-                     'if-Unmodified-Since' : parameters['if-Unmodified-Since'],
+                     headers : headers,
                      method : 'DELETE' },
                     callback );
 };
 
 function list( auth, parameters, callback ) {
-  var query = '';
-  query = query + '?compartmentId=' + encodeURIComponent( parameters.compartmentId);
-  if ( 'limit' in parameters )
-    query = query + '&limit=' + encodeURIComponent( parameters.limit );
-  if ( 'page' in parameters )
-    query = query + '&page=' + encodeURIComponent( parameters.page );
-  if ( 'name' in parameters )
-    query = query + '&name=' + encodeURIComponent( parameters.name );
-  if ( 'nameContains' in parameters )
-    query = query + '&nameContains=' + encodeURIComponent( parameters.nameContains );
-  if ( 'zoneType' in parameters )
-    query = query + '&zoneType=' + encodeURIComponent( parameters.zoneType );
-  if ( 'timeCreatedGreaterThanOrEqualTo' in parameters )
-    query = query + '&timeCreatedGreaterThanOrEqualTo=' + encodeURIComponent( parameters.timeCreatedGreaterThanOrEqualTo );
-  if ( 'timeCreatedLessThan' in parameters )
-    query = query + '&timeCreatedLessThan=' + encodeURIComponent( parameters.timeCreatedLessThan );
-  if ( 'sortBy' in parameters )
-    query = query + '&sortBy=' + encodeURIComponent( parameters.sortBy );
-  if ( 'sortOrder' in parameters )
-    query = query + '&sortOrder=' + encodeURIComponent( parameters.sortOrder );
-  if ( 'lifecycleState' in parameters )
-    query = query + '&lifecycleState=' + encodeURIComponent( parameters.lifecycleState );
-
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['compartmentId', 'limit', 'page', 'sortBy', 'name', 'nameContains', 'zoneType', 
+                              'timeCreatedGreaterThanOrEqualTo', 'timeCreatedLessThan', 'sortOrder', 'lifecycleState'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
   ocirest.process( auth,
-                   { path : auth.RESTversion + '/zones' +
-                            query,
+                   { path : auth.RESTversion + '/zones' + queryString,
                      host : endpoint.service.dns[auth.region],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };

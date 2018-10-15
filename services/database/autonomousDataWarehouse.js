@@ -1,100 +1,105 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
-
 function create( auth, parameters, callback ){
+  var possibleHeaders = ['opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
-                   { 'path' : auth.RESTversion + '/autonomousDataWarehouses',
-                     'host' : endpoint.service.database[auth.region],
-                     'method' : 'POST',
-                     'opc-retry-token' :  parameters['opc-retry-token'],
-                     'body' : parameters.body }, 
+                   { path : auth.RESTversion + '/autonomousDataWarehouses',
+                     host : endpoint.service.database[auth.region],
+                     method : 'POST',
+                     headers : headers,
+                     body : parameters.body }, 
                    callback );
 }
 
 function drop( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
-                   { 'path' : auth.RESTversion + '/autonomousDataWarehouses/' + 
-                              encodeURIComponent(parameters.autonomousDataWarehouseId),
-                     'host' : endpoint.service.database[auth.region],
-                     'method' : 'DELETE',
-                     'if-match' : parameters['if-match'] },
+                   { path : auth.RESTversion + '/autonomousDataWarehouses/' + 
+                            encodeURIComponent(parameters.autonomousDataWarehouseId),
+                     host : endpoint.service.database[auth.region],
+                     method : 'DELETE',
+                     headers : headers },
                     callback )
 };
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = [];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
-                   { 'path' : auth.RESTversion + '/autonomousDataWarehouses/' + 
+                   { path : auth.RESTversion + '/autonomousDataWarehouses/' + 
                               encodeURIComponent(parameters.autonomousDataWarehouseId),
-                     'host' : endpoint.service.database[auth.region],
-                     'method' : 'POST' },
+                     host : endpoint.service.database[auth.region],
+                     headers : headers,
+                     method : 'POST' },
                     callback );
 };
 
 function list( auth, parameters, callback ) {
-  var query = '';
-  query = query + '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
-  if ( parameters.limit !== undefined )
-    query = query + '&limit=' + encodeURIComponent(parameters.limit);
-  if ( parameters.page !== undefined )
-    query = query + '&page=' + encodeURIComponent(parameters.page);
-  if ( parameters.sortBy !== undefined )
-    query = query + '&sortBy=' + encodeURIComponent(parameters.sortBy);
-  if ( parameters.sortOrder !== undefined )
-    query = query + '&sortOrder=' + encodeURIComponent(parameters.sortOrder);
-  if ( parameters.lifecycleState !== undefined )
-    query = query + '&lifecycleState=' + encodeURIComponent(parameters.lifecycleState);
-  if ( parameters.displayName !== undefined )
-    query = query + '&displayName=' + encodeURIComponent(parameters.displayName);
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['compartmentId', 'page', 'limit', 'sortBy', 'sortOrder', 'lifecycleState', 'displayName' ];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
 
-  headers = { 'path' : auth.RESTversion + '/autonomousDataWarehouses' + query,
-              'host' : endpoint.service.database[auth.region],
-              'method' : 'GET',
-              'content-type' : 'application/json' };
-  ocirest.process( auth, headers, callback );
+  ocirest.process( auth,
+                   { path : auth.RESTversion + '/autonomousDataWarehouses/' + queryString,
+                     host : endpoint.service.database[auth.region],
+                     headers : headers,
+                     method : 'POST' },
+                    callback );
 };
 
 function restore( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path: auth.RESTversion + '/autonomousDataWarehouses/' + 
                            encodeURIComponent(parameters.autonomousDataWarehouseId) + 
                            '/actions/restore',
                      host : endpoint.service.database[auth.region],
                      method : 'PUT',
-                    'if-match' : parameters['if-match'],
+                     headers : headers,
                      body : parameters.body },
                    callback );
 };
 
 function start( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/autonomousDataWarehouses/' + 
                             encodeURIComponent(parameters.autonomousDataWarehouseId) + 
                             '/actions/start',
                      host : endpoint.service.database[auth.region],
-                    'if-match' : parameters['if-match'],
+                     headers : headers,
                      method : 'POST' },
                     callback );
 };
 
 function stop( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : auth.RESTversion + '/autonomousDataWarehouses/' + 
                             encodeURIComponent(parameters.autonomousDataWarehouseId) + 
                             '/actions/stop',
-                    'if-match' : parameters['if-match'],
+                     headers : headers,
                      host : endpoint.service.database[auth.region],
                      method : 'POST' },
                     callback );
 };
 
 function update( auth, parameters, callback ) {
+  var possibleHeaders = ['if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path: auth.RESTversion + '/autonomousDataWarehouses/' + 
                            encodeURIComponent(parameters.autonomousDataWarehouseId),
                      host : endpoint.service.database[auth.region],
                      method : 'PUT',
-                    'if-match' : parameters['if-match'],
+                     headers : headers,
                      body : parameters.body },
                    callback );
 };

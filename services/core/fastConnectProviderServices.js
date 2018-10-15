@@ -1,49 +1,49 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
-function create( auth, parameters, callback ) {
+function get( auth, parameters, callback ) {
+  var possibleHeaders = [];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
-                     { path : auth.RESTversion + '/fastConnectProviderServices',
+                     { path : auth.RESTversion + 
+                              '/fastConnectProviderServices' + encodeURIComponent(parameters.providerServiceId),
                        host : endpoint.service.core[auth.region],
-                       method : 'POST',
-                       body : parameters.body,
-                       'opc-retry-token' : parameters['opc-retry-token'] },
+                       method : 'GET',
+                       headers : headers },
                       callback )
   };
 
 function list( auth, parameters, callback ) {
-    var query = '';
-    query = '?compartmentId=' + encodeURIComponent(parameters.compartmentId);
-    if ( 'page' in parameters )
-      query = query + '&page=' + encodeURIComponent(parameters.page);
-    if ( 'limit' in parameters )
-      query = query + '&limit=' + encodeURIComponent(parameters.limit);
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['compartmentId', 'limit', 'page'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
     ocirest.process( auth, 
-                     { path : auth.RESTversion + 
-                      '/fastConnectProviderServices' + query,
+                     { path : auth.RESTversion + '/fastConnectProviderServices' + queryString,
                        host : endpoint.service.core[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };
 
 function listVirtualCircuitBandwidthShapes( auth, parameters, callback ) {
-    var query = '';
-    if ( 'page' in parameters )
-      query = query + (query==''?'?':'&') + 'page=' + encodeURIComponent(parameters.page);
-    if ( 'limit' in parameters )
-      query = query + (query==''?'?':'&') + 'limit=' + encodeURIComponent(parameters.limit);
+  var possibleHeaders = [];
+  var possibleQueryStrings = ['limit', 'page'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
     ocirest.process( auth, 
                      { path : auth.RESTversion + 
                       '/fastConnectProviderServices/' + encodeURIComponent(parameters.providerServiceId) +
-                      '/virtualCircuitBandwidthShapes' + query,
+                      '/virtualCircuitBandwidthShapes' + queryString,
                        host : endpoint.service.core[auth.region],
+                       headers : headers,
                        method : 'GET' }, 
                      callback );
   };
 
 
   module.exports={
-      list: list,
+      get: get,
       listVirtualCircuitBandwidthShapes: listVirtualCircuitBandwidthShapes,
       create: create
   }

@@ -1,37 +1,37 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function cancel( auth, parameters, callback ){
+  var possibleHeaders = ['opc-client-request-id'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : '/workRequests/' + encodeURIComponent(parameters.workRequestId),
                        host : endpoint.service.objectStore[auth.region],
-                       'opc-client-request-id' : parameters['opc-client-request-id'],
+                       headers : headers,
                        method : 'DELETE' },
                      callback );
   }
 
 function get( auth, parameters, callback ){
+  var possibleHeaders = ['opc-client-request-id'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
     ocirest.process( auth,
                      { path : '/workRequests/' + encodeURIComponent(parameters.workRequestId),
                        host : endpoint.service.objectStore[auth.region],
-                       'opc-client-request-id' : parameters['opc-client-request-id'],
+                       headers : headers,
                        method : 'GET' },
                      callback );
   }
 
 function list( auth, parameters, callback ){
-    var query = '';
-    if( 'limit' in parameters )
-      query += (query==''?'&':'?') + 'limit=' + encodeURIComponent(parameters.limit);
-    if( 'page' in parameters )
-      query += (query==''?'&':'?') + 'page=' + encodeURIComponent(parameters.page);
-    if( 'workRequestType' in parameters )
-      query += (query==''?'&':'?') + 'workRequestType=' + encodeURIComponent(parameters.workRequestType);
-      
+  var possibleHeaders = ['opc-client-request-id' ];
+  var possibleQueryStrings = ['compartmentId', 'workRequestType', 'limit', 'page'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  var queryString = ocirest.buildQueryString( possibleQueryStrings, parameters );
     ocirest.process( auth,
-                     { path : '/workRequests',
+                     { path : '/workRequests' + queryString,
                        host : endpoint.service.objectStore[auth.region],
-                       'opc-client-request-id' : parameters['opc-client-request-id'],
+                       headers : headers,
                        method : 'GET' },
                      callback );
   }

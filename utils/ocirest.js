@@ -4,16 +4,16 @@ var jsSHA = require('jssha');
 
 function process( auth, options, callback) {
 
+  // begin https request
+  var request = https.request( options, handleResponse(callback));
+
   // process request body
   var body;
-  if (options.headers['content-type'] == 'x-www-form-urlencoded' )
+  if (options.headers['content-type'] == 'application/x-www-form-urlencoded' )
     body = options.body;
   else
     body = JSON.stringify( options.body );
   delete options.body;
-
-  // begin https request
-  var request = https.request( options, handleResponse(callback));
 
   // sing the headers
   sign( auth, request, body );
@@ -32,7 +32,7 @@ function sign( auth, request, body ) {
     request.setHeader("content-length", body.length);
     headersToSign = headersToSign.concat([ "content-type", "content-length" ]);
 
-    if ( request.headers['content-type'] == 'x-www-form-urlencoded' ){
+    if ( request.getHeader('content-type') != 'application/x-www-form-urlencoded' ){
       var shaObj = new jsSHA("SHA-256", "TEXT");
       shaObj.update(body);
       request.setHeader("x-content-sha256", shaObj.getHash('B64'));

@@ -1,39 +1,42 @@
-var ocirest = require('../../ocirest.js');
+var ocirest = require('../../utils/ocirest.js');
 var endpoint = require('../../configs/endpoints.js');
 
 function put( auth, parameters, callback ){
+  var possibleHeaders = ['opc-client-request-id', 'if-match', 'if-match-none'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : '/n/' +  encodeURIComponent(parameters.namespaceName) + 
                             '/b/' + encodeURIComponent(parameters.bucketName) + 
                             '/l',
                      host : endpoint.service.objectStore[auth.region],
                      method : 'PUT',
-                     'opc-client-response' : parameters['opc-client-response'],
-                     'if-match' : parameters['if-match'],
-                     'if-none-match' : parameters['if-none-match'],
+                     headers : headers,
                      body : parameters.body }, 
                    callback );
 }
 
 function get( auth, parameters, callback ) {
+  var possibleHeaders = ['opc-client-request-id'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : '/n/' +  encodeURIComponent(parameters.namespaceName) + 
                             '/b/' + encodeURIComponent(parameters.bucketName) + 
                             '/l',
                      host : endpoint.service.objectStore[auth.region],
-                     'opc-client-request-id' : parameters['opc-client-request-id'],
+                     headers : headers,
                      method : 'GET' },
                     callback );
 };
 
 function drop( auth, parameters, callback ) {
+  var possibleHeaders = ['opc-client-request-id', 'if-match'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
   ocirest.process( auth,
                    { path : '/n/' +  encodeURIComponent(parameters.namespaceName) + 
                             '/b/' + encodeURIComponent(parameters.bucketName) + 
                             '/l',
                      host : endpoint.service.objectStore[auth.region],
-                     'if-match' : parameters['if-match'],
-                     'opc-client-request-id' : parameters['opc-client-request-id'],
+                     headers : headers,
                      method : 'DELETE' },
                     callback );
 };

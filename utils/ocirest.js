@@ -4,9 +4,6 @@ var jsSHA = require('jssha');
 
 function process( auth, options, callback) {
 
-  // begin https request
-  var request = https.request( options, handleResponse(callback));
-
   // process request body
   var body;
   if (options.headers['content-type'] == 'application/x-www-form-urlencoded' )
@@ -14,6 +11,9 @@ function process( auth, options, callback) {
   else
     body = JSON.stringify( options.body );
   delete options.body;
+
+  // begin https request
+  var request = https.request( options, handleResponse(callback));
 
   // sing the headers
   sign( auth, request, body );
@@ -67,7 +67,7 @@ function handleResponse( callback ) {
 function buildHeaders( possibleHeaders, options, bString ){
   var headers = {};
   headers['content-type'] = bString ? 'application/x-www-form-urlencoded' : 'application/json';
-
+  headers['user-agent'] = 'Mozilla/5.0';
   for( var i=0; i<possibleHeaders.length; i++ )
       if ( possibleHeaders[i].toLowerCase() in options )
         headers[possibleHeaders[i].toLowerCase()] = options[possibleHeaders[i]];

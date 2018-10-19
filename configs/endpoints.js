@@ -1,5 +1,10 @@
 var service = 
   {
+    amazon : { 'us-phoenix-1' : '<object_storage_namespace>.compat.us-phoenix-1.oraclecloud.com',
+               'us-ashburn-1' : '<object_storage_namespace>.compat.us-ashburn-1.oraclecloud.com',
+               'eu-frankfurt-1' : '<object_storage_namespace>.compat.eu-frankfurt-1.oraclecloud.com',
+               'uk-london-1' : '<object_storage_namespace>.compat.uk-london-1.oraclecloud.com' } ,
+    myServices : 'itra.oraclecloud.com',
     kms : { 'us-phoenix-1' : 'kms.us-phoenix-1.oraclecloud.com',
               'us-ashburn-1' : 'kms.us-ashburn-1.oraclecloud.com',
               'eu-frankfurt-1' : 'kms.eu-frankfurt-1.oraclecloud.com',

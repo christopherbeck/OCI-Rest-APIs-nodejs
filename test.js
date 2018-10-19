@@ -233,9 +233,9 @@ var parameters = {
       namespaceName : 'oraclecloud987',
       bucketName : 'pebbles',
       compartmentId : 'ocid1.tenancy.oc1..aaaaaaaahm47pxqwunxjqel6jhiuyodldss4z2tx4m24cfmyqys3zndfw3ta',
-      body : { 'object' : '94927a.jpg' } 
+      //body : { 'object' : '94927a.jpg' } 
     };
-
+/*
 // create the multi part upload
 oci.objectStore.obj.createMultipartUpload( auth, parameters, 
   function(data){
@@ -273,3 +273,23 @@ require( 'deasync' ).loopWhile(function(){return parts != chunks;})
 // commit the multi part upload
 parameters.body = partsToCommitBody;
 oci.objectStore.obj.commitMultipartUpload( auth, parameters, function(){ console.log('success');} );
+
+oci.database.autonomousDatabase.list( auth, parameters, function(data){console.log(data);})
+*/
+parameters.domain = 'ocid1.tenancy.oc1..aaaaaaaahm47pxqwunxjqel6jhiuyodldss4z2tx4m24cfmyqys3zndfw3ta';
+parameters.domain = 'myservices-cacct-f7686c0df763414cbe38fabede8869e6';
+//parameters.id = 'cacct-f7686c0df763414cbe38fabede8869e6';
+//parameters["X-ID-TENANT-NAME"] = 'idcs-42320e221b6e417fa1fa1a3341ebb6c0';
+parameters.domain = 'oraclecloud987';
+parameters.domain = '.anon';
+parameters.domain = 'idcs-42320e221b6e417fa1fa1a3341ebb6c0';
+auth.RESTversion = '/v1';
+
+//oci.myServices.purchaseEntitlements.get( auth, parameters, function(data){console.log(data);})
+
+//oci.objectStore.namespace.get( auth, parameters, function(data){console.log(data);})
+
+var s = "https://<object_storage_namespace>.compat.objectstorage.us-phoenix-1.oraclecloud.com";
+var r = "newServer";
+
+console.log( s.replace('<object_storage_namespace>',r));

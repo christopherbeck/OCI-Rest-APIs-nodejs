@@ -11,8 +11,10 @@ var kms = require( './services/kms.js' );
 var loadBalance = require( './services/loadBalance.js' );
 var search = require( './services/search.js' );
 var containerEngine = require( './services/containerEngine.js' );
+var myServices = require( './services/myServices.js')
 
 module.exports = {
+    myServices: myServices,
     database: database,
     objectStore: objectStore,
     core: core,

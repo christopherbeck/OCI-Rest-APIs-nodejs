@@ -23,6 +23,7 @@ Inputs take the following form...
     keyFingerprint : "a2:f4:45:ca:98"
     RESTversion : '/20160918',
     region : 'us-ashburn-1',
+    object_storage_name : 'abcde' // only needed for amazon S3 access
     privateKey : // the text of the PEM key, NOT the name of the file
   };
 ```

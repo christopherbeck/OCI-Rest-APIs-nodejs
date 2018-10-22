@@ -47,7 +47,7 @@ function list( auth, parameters, callback ) {
                    { path : auth.RESTversion + '/autonomousDataWarehouses/' + queryString,
                      host : endpoint.service.database[auth.region],
                      headers : headers,
-                     method : 'POST' },
+                     method : 'GET' },
                     callback );
 };
 

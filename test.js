@@ -1,57 +1,83 @@
-//var fs = require( 'fs' );
-//var oci = require( './oci' );
+var fs = require( 'fs' );
+var oci = require( './oci' );
 
-/*
+//
+// default callback function
+//
+var callback = function(data) { console.log( data ); };
+
+//
+// Set up the auth object
+//
 var auth={
-    tenancyId : 'ocid1.tenancy.oc1..aaaaaaaahm47pxqwunxjqel6jhiuyodldss4z2tx4m24cfmyqys3zndfw3ta',
-    userId : 'ocid1.user.oc1..aaaaaaaakb5c25jsxn3xx6jdi5gfoqmtlyb6rwfhqmreucv76ubnofnbspna',
+    tenancyId : 'ocid1.tenancy.oc1..aaaaaaaag2lewgpfx45exrgreh6ggn6yy5u3ceux6znsdiepplndtmmqonnq',
+    userId : 'ocid1.user.oc1..aaaaaaaayzac5nk42n7klwgzzzatyy2vm45v7zc2l4vzwucjmoiymjtpvhka',
     keyFingerprint : 'd0:77:11:66:7b:a8:90:c0:ef:c7:5c:79:9d:c6:f4:24',
     RESTversion : '/20160918',
-    //RESTversion : '/20180115',
-    //RESTversion: '/20171215',
-    region: 'us-ashburn-1',
-    privateKeyPath: '/Users/clbeck/.oci/oci_api_key.pem'
+    region: 'us-ashburn-1'
 };
-auth.privateKey = fs.readFileSync(auth.privateKeyPath, 'ascii');
-*/
-var compartmentId = 'ocid1.tenancy.oc1..aaaaaaaahm47pxqwunxjqel6jhiuyodldss4z2tx4m24cfmyqys3zndfw3ta';
-//var AWDOCID = 'ocid1.autonomousdwdatabase.oc1.iad.abuwcljtbqogthz3o4zffd7tcddcfgl4edoi5ro2chquqk7ufslbgiwsywjq';
+auth.privateKey = fs.readFileSync('/Users/clbeck/.oci/oci_api_key.pem', 'ascii');
 
-//oci.database.autonomousDatabase.list( auth, { compartmentId : compartmentId}, function(data){console.log(data);});
-//oci.database.autonomousDataWarehouse.list( auth, { compartmentId: compartmentId }, function(data){console.log(data[0].dbName);});
-
-var ATPOCID = 'ocid1.autonomousdatabase.oc1.iad.abuwcljskistzoklbyg2wkmparvlfblisrdc6sjhcltqcqvfs777o4uutjcq';
-var tags = { "freeformTags" : {"chris": 123456, "xxx": "yyy", "zzz": "aaa" }};
+//
+// set up parameters object
+//
 var parameters = {
-    body : tags,
-    autonomousDatabaseId : ATPOCID
-}
-//oci.database.autonomousDatabase.update( auth, parameters, function(data){console.log(data);} );
-//oci.database.autonomousDatabaseBackup.list( auth, {"compartmentId": compOCID }, function(data){console.log(data);} );
-//`oci.objectStore.bucket.list(auth, 'oraclecloud431', {compartmentId: compOCID }, function(data){console.log(data);} );
-//oci.objectStore.bucket.get(auth, 'oraclecloud431', 'calvin_bucket', function(data){console.log(data);} );
-
-//oci.objectStore.namespace.getMetadata( auth, 'oraclecloud431', function(data){console.log(data);} )
-
-//oci.objectStore.obj.list( auth, { namespaceName: 'oraclecloud431', bucketName: 'calvin_bucket'}, function(data){console.log(data);})
-
-compOCID = 'ocid1.tenancy.oc1..aaaaaaaa72nxc2if3h676gok2mo34fzstut6iztkdruls7hqwxdj6pysmmhq';
-//oci.database.autonomousDatabase.list( auth, { compartmentId: compOCID}, function(data){console.log(data);} );
-
-parameters = {
-  namespaceName: 'oraclecloud987',
-  bucketName: 'pebbles',
-  body : { sourceName: 'tejis.jpg', newName: "tejus.jpg" },
-  compartmentId : '',
-  dbSystemShape : 'VM.Standard1.1'
+  compartmentId : 'ocid1.compartment.oc1..aaaaaaaapfevjgs2bylnodtw7oojzrvyonna2e4vkkddzbos4zyxhr7jizka'
 };
 
-//oci.objectStore.obj.rename( auth, parameters, function(data){console.log(data);} );
+//
+// List autonomous datawarehouses
+//
+oci.database.autonomousDataWarehouse.list( auth, parameters, callback );
 
-//oci.database.dbVersionSummary.list( auth, parameters, function(data){console.log(data);}  );
 
-//auth.RESTversion = '/20180409';
-//oci.search.resourceType.list( auth, parameters, function(data){console.log(JSON.stringify(data[0]));}  );
+//
+// List autonomous datawarehouses and get first id
+//
+var adwId = '';
+oci.database.autonomousDataWarehouse.list( auth, parameters, function(data){
+  adwId = data[0].id;
+} );
+//wait until asqyn call finishes
+require( 'deasync' ).loopWhile(function(){return adwId == '';})
+console.log( 'autonomous database id: ' + adwId );
+
+//
+// change the freeform tags for autonomous datawarehouse using adwID above
+//
+
+// set up new parameters
+var tags = { "freeformTags" : {"tag1": 123456, "tag2": "yyy", "anotherTag": "aaa" }};
+parameters = {
+    body : tags,
+    autonomousDataWarehouseId : adwId
+}
+oci.database.autonomousDataWarehouse.update( auth, parameters, function(data){console.log(data);} );
+
+/*
+//
+//  List files in objectStore bucket
+//
+
+parameters ={
+  namespaceName: 'oraclecloud987',
+  bucketName: 'pebbles'
+}
+oci.objectStore.obj.list( auth, parameters, function(data){
+  for(var i=0; i<data.objects.length; i++ )
+    console.log( data.objects[i].name );
+} );
+
+//
+//  Rename file in objectstore bucket
+//
+
+// add body element to parameters
+parameters.body = { sourceName : 'abc.jpg', newName : 'xyz.jpg' };
+oci.objectStore.obj.rename( auth, parameters, callback );
+
+auth.RESTversion = '/20180409';
+oci.search.resourceType.list( auth, parameters, function(data){console.log(JSON.stringify(data[0]));}  );
 
 
 /*
@@ -275,7 +301,6 @@ parameters.body = partsToCommitBody;
 oci.objectStore.obj.commitMultipartUpload( auth, parameters, function(){ console.log('success');} );
 
 oci.database.autonomousDatabase.list( auth, parameters, function(data){console.log(data);})
-*/
 parameters.domain = 'ocid1.tenancy.oc1..aaaaaaaahm47pxqwunxjqel6jhiuyodldss4z2tx4m24cfmyqys3zndfw3ta';
 parameters.domain = 'myservices-cacct-f7686c0df763414cbe38fabede8869e6';
 //parameters.id = 'cacct-f7686c0df763414cbe38fabede8869e6';
@@ -292,4 +317,5 @@ auth.RESTversion = '/v1';
 var s = "https://<object_storage_namespace>.compat.objectstorage.us-phoenix-1.oraclecloud.com";
 var r = "newServer";
 
-console.log( s.replace('<object_storage_namespace>',r));
+//console.log( s.replace('<object_storage_namespace>',r));
+*/

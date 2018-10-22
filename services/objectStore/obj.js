@@ -163,6 +163,7 @@ function put( auth, parameters, callback ){
                      host : endpoint.service.objectStore[auth.region],
                      headers : headers,
                      uploadFile: true,
+                     body : parameters.body,
                      method : 'PUT' },
                    callback ); 
 }

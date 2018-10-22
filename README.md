@@ -2,9 +2,7 @@
 
 Oracle Cloud Infrastructure REST APIs implemented in node.js.  
 
-**NOTE:  This API is not fully implemented yet, but more are being added and the plan is to fully implement the entire REST API.**
-
- Most commands take the form of:
+Most commands take the form of:
 
 ## oci.[serviceName].[resourceType].[action]
 
@@ -38,7 +36,7 @@ Inputs take the following form...
     autonomousDatabaseId : "asd.jsj.0239409324",
     body : { "freeformTags" : {"tag 1": 123456,
                                "tag 2": "yyy",
-                               "tag 3": "aaa" },
+                               "another tag": "aaa" },
     };
 ```
 

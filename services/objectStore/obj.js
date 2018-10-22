@@ -162,7 +162,6 @@ function put( auth, parameters, callback ){
                             '/o/' + encodeURIComponent(parameters.objectName),
                      host : endpoint.service.objectStore[auth.region],
                      headers : headers,
-                     uploadFile: true,
                      body : parameters.body,
                      method : 'PUT' },
                    callback ); 
@@ -211,7 +210,6 @@ function uploadPart( auth, parameters, callback ) {
       host : endpoint.service.objectStore[auth.region],
       headers : headers,
       method : 'PUT',
-      uploadFile: true,
       body : parameters.body },
       callback );
 }

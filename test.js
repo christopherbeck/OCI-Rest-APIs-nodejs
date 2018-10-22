@@ -55,15 +55,6 @@ parameters = {
 oci.database.autonomousDataWarehouse.update( auth, parameters, function(data){console.log(data);} );
 
 //
-//  Rename file in objectstore bucket
-//
-
-// add body element to parameters
-parameters.body = { sourceName : 'abc.jpg', newName : 'xyz.jpg' };
-oci.objectStore.obj.rename( auth, parameters, callback );
-
-
-//
 //  list all resource Types
 //
 
@@ -105,3 +96,12 @@ oci.objectStore.obj.list( auth, parameters, function(data){
   for(var i=0; i<data.objects.length; i++ )
     console.log( data.objects[i].name );
 } );
+
+
+//
+//  Rename file in objectstore bucket
+//
+
+// add body element to parameters
+parameters.body = { sourceName : '94927a.jpg', newName : 'xyz.jpg' };
+oci.objectStore.obj.rename( auth, parameters, callback );

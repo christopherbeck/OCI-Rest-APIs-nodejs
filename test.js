@@ -79,15 +79,20 @@ oci.core.shape.list( auth, parameters, callback );
 
 // set up the parameter object
 parameters = {
-      objectName : '94927a.jpg',
+      objectName : 'scrown.jpg',
       namespaceName: 'gse00014467',
       bucketName : 'chris_bucket'
     };
-
-parameters.body = fs.readFileSync( '/Users/clbeck/Desktop/94927a.jpg');
-
+parameters.body = fs.readFileSync( '/Users/clbeck/Desktop/scrown.jpg');
 oci.objectStore.obj.put( auth, parameters, callback );
 
+parameters.objectName = 'tourney.jpg'
+parameters.body = fs.readFileSync( '/Users/clbeck/Desktop/tourney.jpg');
+oci.objectStore.obj.put( auth, parameters, callback );
+
+parameters.objectName = 'jessieBeck.jpg'
+parameters.body = fs.readFileSync( '/Users/clbeck/Desktop/jessieBeck.jpg');
+oci.objectStore.obj.put( auth, parameters, callback );
 //
 //  List files in objectStore bucket
 //

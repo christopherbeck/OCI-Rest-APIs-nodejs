@@ -33,7 +33,7 @@ function get( auth, parameters, callback ) {
                               encodeURIComponent(parameters.autonomousDataWarehouseId),
                      host : endpoint.service.database[auth.region],
                      headers : headers,
-                     method : 'POST' },
+                     method : 'GET' },
                     callback );
 };
 

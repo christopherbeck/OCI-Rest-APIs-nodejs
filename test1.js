@@ -27,10 +27,17 @@ body : { 'password': 'P0k3rCh1pR4ck' }
 };
 oci.database.autonomousDataWarehouse.list( auth, parameters, callback );
 
+/*
 oci.database.autonomousDataWarehouse.generateWallet( auth, parameters, function(resp){
   var file = fs.createWriteStream('/Users/clbeck/Desktop/file.zip');
   resp.pipe(file);
 } );
+*/
+
+oci.database.autonomousDataWarehouse.generateWallet( auth, parameters, function(resp){
+  var buf = Buffer.from(resp, 'utf8');
+  fs.writeFile('/Users/clbeck/Desktop/file.zip', buf, 'binary', function(){} );
+});
 
 parameters = {
   namespaceName:'gse00014467',
@@ -40,11 +47,5 @@ parameters = {
 
 oci.objectStore.obj.get( auth, parameters, function(resp){
   var buf = Buffer.from(resp, 'utf8');
-  fs.writeFile('/Users/clbeck/Desktop/file.jpg', buf, 'binary' , function(err) {
-    if(err) {
-        console.log(err);
-    } else {
-        console.log("The file was saved!");
-    }
-  });
+  fs.writeFile('/Users/clbeck/Desktop/file.jpg', buf, 'binary' , function() {} );
 });

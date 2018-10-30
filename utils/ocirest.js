@@ -54,25 +54,29 @@ function sign( auth, request, body ) {
 // generates a function to handle the https.request response object
 function handleResponse( callback ) {
   return function(response) {
-    console.log( response.headers['content-type'] );
     var contentType = response.headers['content-type'];
     if ( contentType == 'application/x-www-form-urlencoded' )
       response.setEncoding( 'binary' );
     var JSONBody = '';
     var buffer = [];
 
-      if ( contentType == 'application/octet-stream' )
-        callback(response);
+    /*
+    if ( contentType == 'application/octet-stream' )
+      callback(response);
+      */
 
     response.on( 'data', function(chunk) { 
       if( contentType == 'application/json' )
         JSONBody += chunk; 
-      if( contentType == 'application/x-www-form-urlencoded')
+      if( contentType == 'application/x-www-form-urlencoded' )
         buffer.push( Buffer.from( chunk, 'binary' ) );
+      if( contentType == 'application/octet-stream' )
+        buffer.push( chunk );
     });
 
     response.on( 'end', function() {
-      if ( contentType == 'application/x-www-form-urlencoded' )
+      if ( contentType == 'application/x-www-form-urlencoded' ||
+           contentType == 'application/octet-stream' )
       {
         var binary = Buffer.concat(buffer);
         callback(binary);

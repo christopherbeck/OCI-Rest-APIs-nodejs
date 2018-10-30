@@ -104,6 +104,20 @@ function update( auth, parameters, callback ) {
                    callback );
 };
 
+function generateWallet( auth, parameters, callback ) {
+  var possibleHeaders = ['opc-request-id, opc-retry-token'];
+  var headers = ocirest.buildHeaders( possibleHeaders, parameters );
+  ocirest.process( auth,
+                   { path : auth.RESTversion + '/autonomousDataWarehouses/' + 
+                            encodeURIComponent(parameters.autonomousDataWarehouseId) + 
+                            '/actions/generateWallet',
+                     headers : headers,
+                     host : endpoint.service.database[auth.region],
+                     body : parameters.body,
+                     method : 'POST' },
+                    callback );
+};
+
 module.exports = {
     list: list,
     start: start,
@@ -112,5 +126,6 @@ module.exports = {
     get: get,
     create: create,
     restore: restore,
-    drop: drop
+    drop: drop,
+    generateWallet: generateWallet
     };

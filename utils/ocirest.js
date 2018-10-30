@@ -13,13 +13,14 @@ function process( auth, options, callback) {
   delete options.body;
 
   // begin https request
-  var request = https.request( options, handleResponse(callback));
+  var request = https.request( options, handleResponse(callback) );
 
   // sing the headers
   sign( auth, request, body );
 
-  // send the body and process the response
-  request.end(body);
+  // send the body and close the request
+  request.write( body === undefined ? '' : body );
+  request.end();
 }
 
 function sign( auth, request, body ) {
@@ -53,13 +54,33 @@ function sign( auth, request, body ) {
 // generates a function to handle the https.request response object
 function handleResponse( callback ) {
   return function(response) {
-    var responseBody = "";
-    response.on('data', function(chunk) { responseBody += chunk; });
-    response.on('end', function() { if (responseBody!="")
-                                      callback(JSON.parse(responseBody));
-                                    else
-                                      callback(response.headers /*responseBody*/);
-                                  });
+    console.log( response.headers['content-type'] );
+    var contentType = response.headers['content-type'];
+    if ( contentType == 'application/x-www-form-urlencoded' )
+      response.setEncoding( 'binary' );
+    var JSONBody = '';
+    var buffer = [];
+
+      if ( contentType == 'application/octet-stream' )
+        callback(response);
+
+    response.on( 'data', function(chunk) { 
+      if( contentType == 'application/json' )
+        JSONBody += chunk; 
+      if( contentType == 'application/x-www-form-urlencoded')
+        buffer.push( Buffer.from( chunk, 'binary' ) );
+    });
+
+    response.on( 'end', function() {
+      if ( contentType == 'application/x-www-form-urlencoded' )
+      {
+        var binary = Buffer.concat(buffer);
+        callback(binary);
+      }
+      if ( contentType == 'application/json' && JSONBody != '' )
+        callback(JSON.parse( JSONBody ));
+    });
+
   }
 };
 
@@ -72,7 +93,7 @@ function buildHeaders( possibleHeaders, options, bString ){
       if ( possibleHeaders[i].toLowerCase() in options )
         headers[possibleHeaders[i].toLowerCase()] = options[possibleHeaders[i]];
   return headers;
-}
+};
 
 function buildQueryString( possibleQuery, options ){
   var query = '';
@@ -80,7 +101,7 @@ function buildQueryString( possibleQuery, options ){
     if ( possibleQuery[i] in options )
       query += (query=='' ? '?' : '&' ) + possibleQuery[i] + '=' + encodeURIComponent(options[possibleQuery[i]]);
   return query;
-}
+};
 
 module.exports = {
   process: process,

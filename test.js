@@ -4,7 +4,7 @@ var oci = require( './oci' );
 //
 // default callback function
 //
-var callback = function(data) { console.log( data ); };
+var callback = function(data) { console.log( null ); };
 
 //
 // Set up the auth object
@@ -52,7 +52,7 @@ parameters = {
     body : tags,
     autonomousDataWarehouseId : adwId
 }
-oci.database.autonomousDataWarehouse.update( auth, parameters, function(data){console.log(data);} );
+oci.database.autonomousDataWarehouse.update( auth, parameters, callback );
 
 //
 //  list all resource Types
@@ -86,13 +86,6 @@ parameters = {
 parameters.body = fs.readFileSync( '/Users/clbeck/Desktop/scrown.jpg');
 oci.objectStore.obj.put( auth, parameters, callback );
 
-parameters.objectName = 'tourney.jpg'
-parameters.body = fs.readFileSync( '/Users/clbeck/Desktop/tourney.jpg');
-oci.objectStore.obj.put( auth, parameters, callback );
-
-parameters.objectName = 'jessieBeck.jpg'
-parameters.body = fs.readFileSync( '/Users/clbeck/Desktop/jessieBeck.jpg');
-oci.objectStore.obj.put( auth, parameters, callback );
 //
 //  List files in objectStore bucket
 //

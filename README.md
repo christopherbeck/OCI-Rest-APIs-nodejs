@@ -53,4 +53,4 @@ oci.databases.autonomousDatabase.update( auth,
 **callback**:
   Node.js standard callback function.
 
-See the test.js and files in the examples directory for other examples of how to setup the auth an how to call the API.
+See the test.js and files in the examples directory for other examples of how to setup the auth an how to call/use the API.

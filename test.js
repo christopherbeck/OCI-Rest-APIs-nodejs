@@ -83,7 +83,7 @@ parameters = {
       namespaceName: 'gse00014467',
       bucketName : 'chris_bucket'
     };
-parameters.body = fs.readFileSync( '/Users/clbeck/Desktop/scrown.jpg');
+parameters.body = fs.readFileSync( '/Users/clbeck/Desktop/images/scrown.jpg');
 oci.objectStore.obj.put( auth, parameters, callback );
 
 //

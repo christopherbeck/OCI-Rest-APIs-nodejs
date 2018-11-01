@@ -55,15 +55,8 @@ function sign( auth, request, body ) {
 function handleResponse( callback ) {
   return function(response) {
     var contentType = response.headers['content-type'];
-    if ( contentType == 'application/x-www-form-urlencoded' )
-      response.setEncoding( 'binary' );
     var JSONBody = '';
     var buffer = [];
-
-    /*
-    if ( contentType == 'application/octet-stream' )
-      callback(response);
-      */
 
     response.on( 'data', function(chunk) { 
       if( contentType == 'application/json' )
